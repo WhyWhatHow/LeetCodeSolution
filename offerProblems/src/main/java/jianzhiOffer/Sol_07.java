@@ -21,17 +21,17 @@ public class Sol_07 {
      * @return
      */
     public TreeNode buildTree(int[] preorder, int[] inorder) {
-//        if (preorder.length == 0 || inorder.length == 0)
-//            return null;
-//        TreeNode root = new TreeNode(preorder[0]);
-//        int index = 0;
-//        while (inorder[index] != preorder[0]) index++;
-//        root.left = buildTree(Arrays.copyOfRange(preorder, 1, index + 1),
-//                Arrays.copyOfRange(inorder, 0, index));
-//        root.right = buildTree(Arrays.copyOfRange(preorder, index + 1, preorder.length),
-//                Arrays.copyOfRange(inorder, index + 1, inorder.length));
-//        return root;
-        return dfs(preorder, inorder, 0,  preorder.length,0, inorder.length);
+        if (preorder.length == 0 || inorder.length == 0)
+            return null;
+        TreeNode root = new TreeNode(preorder[0]);
+        int index = 0;
+        while (inorder[index] != preorder[0]) index++;
+        root.left = buildTree(Arrays.copyOfRange(preorder, 1, index + 1),
+                Arrays.copyOfRange(inorder, 0, index));
+        root.right = buildTree(Arrays.copyOfRange(preorder, index + 1, preorder.length),
+                Arrays.copyOfRange(inorder, index + 1, inorder.length));
+        return root;
+//        return dfs(preorder, inorder, 0,  preorder.length,0, inorder.length);
     }
 
     public TreeNode dfs(int[] pre, int[] in, int preStart, int preEnd, int inStart, int inEnd) {

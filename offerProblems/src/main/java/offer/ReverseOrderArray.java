@@ -1,4 +1,4 @@
-package offer.laoyou;
+package offer;
 
 import java.util.LinkedList;
 

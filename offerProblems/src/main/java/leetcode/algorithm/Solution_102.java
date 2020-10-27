@@ -1,8 +1,6 @@
 package leetcode.algorithm;
 
-import com.sun.jmx.remote.internal.ArrayQueue;
-import leetcode.algorithm.bst.TreeNode;
-import sun.reflect.generics.tree.Tree;
+import leetcode.algorithm.dsa.TreeNode;
 
 import java.util.*;
 
@@ -64,8 +62,12 @@ public class Solution_102 {
         node.right = new TreeNode(20);
         node.right.left = new TreeNode(15);
         node.right.right = new TreeNode(7);
-        sol.inorder(node);
+//        sol.inorder(node);
         System.out.println();
+        node.level(node);
+        System.out.println();
+        int depth = node.maxDepth(node);
+        System.out.println("depth : "+depth);
         List<List<Integer>> lists = sol.levelOrder(node);
         System.out.println(lists);
 

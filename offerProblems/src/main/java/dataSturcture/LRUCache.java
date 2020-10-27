@@ -1,4 +1,4 @@
-package leetcode.data.sturcture;
+package dataSturcture;
 
 /**
  * lru算法实现细节:

@@ -1,5 +1,7 @@
 package leetcode.algorithm;
 
+import com.sun.deploy.util.StringUtils;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Stack;
@@ -41,12 +43,33 @@ public class Solution_3 {
 
     }
 
+    public int lengthOfLongestSubstring2(String s) {
+
+        int ans = 0;
+        HashMap<Character, Integer> map = new HashMap<>();
+        int start = 0, end = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            end++;
+
+            if (map.containsKey(c)) {
+                // update start ;
+                start = Math.max(start, map.get(c) + 1);
+            }
+            map.put(c, i);
+            ans = Math.max(ans, end - start);
+
+        }
+        return ans;
+
+    }
+
     public static void main(String[] args) {
         Solution_3 sol = new Solution_3();
 
-        String[] s = new String[]{"pwwkew", "bbbbbbbbbbbb", "abcabcbb","abba"};
+        String[] s = new String[]{"au", "", "pwwkew", "bbbbbbbbbbbb", "abcabcbb", "abba"};
         for (String s1 : s) {
-            int i = sol.lengthOfLongestSubstring(s1);
+            int i = sol.lengthOfLongestSubstring2(s1);
             System.out.println(i);
 
         }

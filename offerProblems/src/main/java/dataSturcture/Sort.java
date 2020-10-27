@@ -1,10 +1,6 @@
-package leetcode.data.sturcture;
+package dataSturcture;
 
-import com.sun.org.apache.bcel.internal.generic.SWAP;
-
-import javax.naming.ldap.SortKey;
 import java.util.Random;
-import java.util.logging.Level;
 
 /**
  * @program: LeetCodeSolution
@@ -180,6 +176,18 @@ public class Sort {
         quickSortA(a, left, lo - 1);
         quickSortA(a, lo + 1, right);
     }
+    int[]num = new int[10];
+    void init(){
+        num[0]=10 ;
+        for(int i = 1 ;i< num.length;i++){
+            num[i]=num[i-1]+2;
+        }
 
-
+    }
+//    int solve(int n ){
+//        return  num[n-1];
+//    }
+//    int solve(int n){
+//        if ( )
+//    }
 }

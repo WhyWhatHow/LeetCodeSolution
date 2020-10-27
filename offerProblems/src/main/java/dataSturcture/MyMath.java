@@ -1,4 +1,4 @@
-package leetcode.data.sturcture;
+package dataSturcture;
 
 /**
  * @program: LeetCodeSolution

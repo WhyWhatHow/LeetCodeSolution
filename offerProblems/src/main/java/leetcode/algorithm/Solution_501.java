@@ -1,6 +1,6 @@
 package leetcode.algorithm;
 
-import leetcode.algorithm.bst.TreeNode;
+import leetcode.algorithm.dsa.TreeNode;
 
 import java.util.*;
 

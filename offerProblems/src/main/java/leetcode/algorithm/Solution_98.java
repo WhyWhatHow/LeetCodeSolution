@@ -1,9 +1,8 @@
 package leetcode.algorithm;
 
-import leetcode.algorithm.bst.TreeNode;
+import leetcode.algorithm.dsa.TreeNode;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
