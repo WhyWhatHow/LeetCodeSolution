@@ -46,9 +46,9 @@ public class Solution_350 {
         for (int i : nums2) {
             if (map.containsKey(i)) {
                 Integer integer = map.get(i);
-                if(integer>0)
-                ans[cnt++]=i;
                 map.put(i, integer-1);
+                if(integer>0)
+                    ans[cnt++]=i;
             }
         }
         return Arrays.copyOfRange(ans, 0,cnt) ;

@@ -3,15 +3,15 @@ package LRU;
 import java.util.LinkedList;
 
 /**
- * @program: JUC
- * @description: lru 链表实现,set复杂度 o(n)
+ * @description: lru算法: 链表实现,set复杂度 o(n)
  * @author: WhyWhatHow
  * @create: 2020-05-03 07:09
  **/
-public class DemoLRU<T> {
+public class DemoLRULinkedList<T> {
     /**
      * lru算法实现： 最近最短时间内未被访问的数据被淘汰
      */
+
     private LinkedList<T> list = new LinkedList();
 //    private T first, last;
     private final static Integer MAX = 3;
@@ -50,7 +50,7 @@ public class DemoLRU<T> {
 
     public static void main(String[] args) {
         Integer[] a= new Integer[]{7,0,1,2,0,3,0,4};
-        DemoLRU<Integer> lru =new DemoLRU<>();
+        DemoLRULinkedList<Integer> lru =new DemoLRULinkedList<>();
         for(int i = 0; i< a.length;i++){
             lru.set(a[i]);
             lru.travel();

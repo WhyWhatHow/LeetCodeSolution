@@ -1,4 +1,4 @@
-package design_patten;
+package design_patten.singleton;
 
 /**
  * @program: LeetCodeSolution
@@ -9,7 +9,8 @@ package design_patten;
 public class SingletonLazy {
     //使用volatile 原因如下:
 //    避免指令重排序
-    private   volatile SingletonLazy instance = null;
+    private static   volatile SingletonLazy instance = null;
+    private volatile SingletonLazy instanceNoS = null;
 
     SingletonLazy() {
     // jvm执行顺序:
@@ -20,7 +21,7 @@ public class SingletonLazy {
 
     public SingletonLazy getInstance() {
         if (instance == null) {
-            synchronized (this) {
+            synchronized (SingletonLazy.class) {
                 if (instance == null) {
                     instance = new SingletonLazy();
                 }

@@ -33,7 +33,7 @@ public class Solution_15 {
         List list = new ArrayList();
         Arrays.sort(nums);
         HashMap<Integer, Boolean> map = new HashMap<>();
-        for (int i = 0; i < nums.length - 2; i++) {
+        for (int i = 0; i < nums.length - 1; i++) {
             map.clear();
             if (i > 0 && nums[i] == nums[i - 1]) {   // 去重
                 continue;
@@ -67,9 +67,13 @@ public class Solution_15 {
 
         List<List<Integer>> lists = sol.threeSum(
 //                new int[]{0,0,0,0,0}
-                new int[]{-4,-2,-2,-2,0,1,2,2,2,3,3,4,4,6,6}
+//                new int[]{-4,-2,-2,-2,0,1,2,2,2,3,3,4,4,6,6}
+                new  int[] {-1, 0, 1, 2, -1, -4, -2, -3, 3, 0, 4}
 //                new int[]{-1, 0, 1, 2, -1, -4}
                 );
+        System.out.println(lists.size());
+        lists.forEach(x -> System.out.println(x.toString()));
+
         System.out.println("==================");
     }
 }

@@ -1,4 +1,4 @@
-package leetcode.algorithm;
+package leetcode.algorithm.tree;
 
 import leetcode.algorithm.dsa.TreeNode;
 

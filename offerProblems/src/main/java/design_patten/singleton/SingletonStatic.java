@@ -1,4 +1,4 @@
-package design_patten;
+package design_patten.singleton;
 
 /**
  * @program: LeetCodeSolution
