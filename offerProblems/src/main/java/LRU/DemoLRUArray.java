@@ -70,11 +70,12 @@ public class DemoLRUArray {
     }
 
     public static void main(String[] args) {
-        Integer[] a = new Integer[]{7, 0, 1, 0,2, 0, 3, 0, 4};
+        Integer[] a = new Integer[]{7, 0, 1, 2, 0, 3, 0, 4,2,3,0,3,2,1,2,0,1,7,0,1};
         DemoLRUArray lru =new DemoLRUArray();
 
         for (int i = 0; i < a.length; i++) {
             lru.set(a[i]);
+            System.out.print("add "+ a[i]+": ");
             lru.travel();
         }
     }

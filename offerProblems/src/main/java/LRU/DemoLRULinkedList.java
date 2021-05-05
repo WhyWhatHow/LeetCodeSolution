@@ -13,7 +13,7 @@ public class DemoLRULinkedList<T> {
      */
 
     private LinkedList<T> list = new LinkedList();
-//    private T first, last;
+    //    private T first, last;
     private final static Integer MAX = 3;
 
     private T get() {
@@ -28,31 +28,34 @@ public class DemoLRULinkedList<T> {
         int size = list.size();
         // 判断插入元素是否在链表中， 是则移动元素，
         int index = list.indexOf(t);
-        if( index!=-1 ){
+        if (index != -1) {
             // 移动元素
             list.remove(index);
             list.addFirst(t);
-            return  ;
+            return;
         }
         // 判断链表是否已满，满，删除末尾元素
-        if(list.size()==MAX){
-           list.removeLast();
+        if (list.size() == MAX) {
+            list.removeLast();
         }
         // 不满，则末尾淘汰
         list.addFirst(t);
     }
-    private void travel(){
+
+    private void travel() {
         for (T t : list) {
-            System.out.print(t+",");
+            System.out.print(t + ",");
         }
         System.out.println();
     }
 
     public static void main(String[] args) {
-        Integer[] a= new Integer[]{7,0,1,2,0,3,0,4};
-        DemoLRULinkedList<Integer> lru =new DemoLRULinkedList<>();
-        for(int i = 0; i< a.length;i++){
+        Integer[] a = new Integer[]{7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2, 1, 2, 0, 1, 7, 0, 1};
+
+        DemoLRULinkedList<Integer> lru = new DemoLRULinkedList<>();
+        for (int i = 0; i < a.length; i++) {
             lru.set(a[i]);
+            System.out.print("add "+ a[i]+": ");
             lru.travel();
         }
     }
