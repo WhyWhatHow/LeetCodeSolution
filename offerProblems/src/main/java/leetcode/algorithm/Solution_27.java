@@ -10,8 +10,36 @@ import java.util.Arrays;
  **/
 
 public class Solution_27 {
+    // 0,1,1,2,2,3 val = 1
 
+    /**
+     * 删除数组中 等于val 的数字
+     * @param nums
+     * @param val
+     * @return
+     */
     public int removeElement(int[] nums, int val) {
+        int cnt = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == val) {
+                cnt++;
+            } else {
+                // i-cnt  表示 重复元素之间的步长.
+                nums[i - cnt ] = nums[i];
+            }
+        }
+        return nums.length-cnt;
+    }
+
+    /**
+     *  step : 1. 找重复元素的起点
+     *         2. 找重复元素出现的次数
+     *         3. 覆盖掉重复元素 -> 数组移位
+     * @param nums
+     * @param val
+     * @return
+     */
+    public int removeElement1(int[] nums, int val) {
         if (nums.length == 0 || nums == null) {
             return 0;
         }
@@ -34,7 +62,7 @@ public class Solution_27 {
                 cnt++;
             }
         }
-        if (cnt==0) {
+        if (cnt == 0) {
             return nums.length;
         }
         for (int i = start; i < nums.length - cnt; i++) {
@@ -49,6 +77,7 @@ public class Solution_27 {
 
     /**
      * sol 28
+     *
      * @param haystack
      * @param needle
      * @return

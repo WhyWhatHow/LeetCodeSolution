@@ -16,12 +16,16 @@ public class ListNode {
     public ListNode(int val) {
         this.val = val;
     }
-
+        //尾插法 插入
     public void setArray(int[] nums){
         ListNode q= this ;
         for (int i = 0; i < nums.length; i++) {
             q.val=nums[i];
-            q.next= new ListNode();
+            if (i==nums.length-1) {
+                q.next=null;
+            }else{
+                q.next= new ListNode();
+            }
             q=q.next;
         }
         q=null;

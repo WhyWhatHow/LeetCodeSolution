@@ -1,5 +1,7 @@
 package leetcode.algorithm;
 
+import leetcode.algorithm.dsa.ListNode;
+
 /**
  * @program: LeetCodeSolution
  * @description:
@@ -7,18 +9,18 @@ package leetcode.algorithm;
  * @create: 2020-05-07 08:03
  **/
 public class Solution_25 {
-    static class ListNode {
-        int val;
-        ListNode next;
-
-        ListNode(int x) {
-            val = x;
-        }
-
-        ListNode() {
-        }
-
-    }
+//    static class ListNode {
+//        int val;
+//        ListNode next;
+//
+//        ListNode(int x) {
+//            val = x;
+//        }
+//
+//        ListNode() {
+//        }
+//
+//    }
 
     /**
      *  1.  获取链表长度
