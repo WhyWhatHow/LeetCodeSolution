@@ -62,11 +62,11 @@ public class MyMath {
     boolean vis[] = new boolean[MAX];
     int cnt = 0; //素数的个数
 
-    void getPrime(int n) {
-        for (int i = 2; i < n; i++) {
+    void getPrime() {
+        for (int i = 2; i < MAX; i++) {
             if (!vis[i]) {
                 prime[cnt++] = i;
-                for (int j = i << 1; j < n; j += i) {
+                for (int j = i << 1; j < MAX; j += i) {
                     vis[j] = true;
                 }
             }
