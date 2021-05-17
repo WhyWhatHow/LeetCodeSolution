@@ -14,7 +14,9 @@ public class Sol_14_1 {
             res *= 3;
             n -= 3;
         }
-        if (n == 4) return res << 2;
+        if (n == 4) {
+            return res << 2;
+        }
         return res * n;
     }
     public static void main(String[] args) {
