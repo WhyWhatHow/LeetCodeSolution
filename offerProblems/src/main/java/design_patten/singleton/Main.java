@@ -12,8 +12,8 @@ public class Main {
     public static void main(String[] args) {
         for(int i= 0 ; i<100;i++){
             new  Thread(()->{
-//                printInstanceDetailSingletonLazy();
-                printInstanceDetailSingleton5();
+                printInstanceDetailSingletonLazy();
+//                printInstanceDetailSingleton5();
             },"thread"+i).start();
         }
     }
