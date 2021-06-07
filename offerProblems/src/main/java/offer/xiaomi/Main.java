@@ -1,4 +1,4 @@
-package xiaomi;
+package offer.xiaomi;
 
 /**
  * @program: LeetCodeSolution
