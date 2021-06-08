@@ -102,7 +102,11 @@ public class DepartmentTest {
         return resList;
     }
 
-    static class Department {
+//    public static List<Department> getSub3(int id, List<Department> allDepartment) {
+////        allDepartment.stream().
+//    }
+
+        static class Department {
         /**
          * id
          */
