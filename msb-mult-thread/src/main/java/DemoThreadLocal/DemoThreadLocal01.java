@@ -34,6 +34,7 @@ public class DemoThreadLocal01 {
 
         System.out.println("main: " + local.get());
         System.out.println( "end ");
+        local.remove();
 //        while(true){}
 //        local.set(new User());
 //        System.out.println(local.get()+"before");
