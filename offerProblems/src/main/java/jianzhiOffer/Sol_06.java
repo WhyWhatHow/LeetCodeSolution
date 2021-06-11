@@ -18,6 +18,7 @@ public class Sol_06 {
             list.addFirst(p.val);
             p=p.next;
         }
+//        Object[] objects = list.toArray();
         int[] ans =new int[list.size()];
         int cnt =0 ;
         for (Integer integer : list) {
