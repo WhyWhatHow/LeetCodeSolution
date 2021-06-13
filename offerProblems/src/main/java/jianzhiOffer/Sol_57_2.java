@@ -1,9 +1,6 @@
 package jianzhiOffer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * @program: LeetCodeSolution
@@ -15,11 +12,11 @@ public class Sol_57_2 {
 
     public int[][] findContinuousSequence(int target) {
         int mid = (target >> 1) + 1;
-        ArrayList<ArrayList<Integer>> res = new ArrayList<>();
+        ArrayList<int[]> res = new ArrayList<>();
 
         for (int i = 1; i < mid; i++) {
             int temp = i;
-            for (int j = i + 1; j <=mid; j++) {
+            for (int j = i + 1; j <= mid; j++) {
                 temp += j;
                 if (temp < target) {
                     continue;
@@ -31,7 +28,8 @@ public class Sol_57_2 {
                 }
             }
         }
-        return transformData(res);
+        return res.toArray(new int[0][]);
+//        return transformData(res);
     }
 
     private int[][] transformData(ArrayList<ArrayList<Integer>> res) {
@@ -41,7 +39,7 @@ public class Sol_57_2 {
         for (ArrayList<Integer> re : res) {
             int i = 0;
 
-            ans[cnt]=new int[re.size()];
+            ans[cnt] = new int[re.size()];
 
             for (Integer integer : re) {
                 ans[cnt][i++] = integer;
@@ -51,12 +49,13 @@ public class Sol_57_2 {
         return ans;
     }
 
-    private void addToList(ArrayList<ArrayList<Integer>> res, int i, int j) {
-        ArrayList<Integer> list = new ArrayList<>();
+    private void addToList(ArrayList<int[]> res, int i, int j) {
+        int[] ints = new int[j - i + 1];
         for (int k = i; k <= j; k++) {
-            list.add(k);
+            ints[k - i] = k;
         }
-        res.add(list);
+        res.add(ints);
+//        res.add(list);
     }
 
 
