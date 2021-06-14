@@ -1,5 +1,8 @@
 package jianzhiOffer;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * @program: LeetCodeSolution
  * @description:
@@ -11,15 +14,25 @@ public class Sol_34 {
         Sol_34 sol = new Sol_34();
     }
 
-    /**
-     * 校验后续遍历, 后序遍历 左右根,
-     * @param postorder
-     * @return
-     */
-    public boolean verifyPostorder(int[] postorder) {
-        if (postorder.length == 0) {
-            return true;
+    List resList = new LinkedList();
+
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+        solve(root, sum, 0);
+        return resList;
+    }
+
+    private void solve(TreeNode root, int sum, int now) {
+        if (root == null) {
+            return;
         }
-        return false ;
+        if (now == sum) {
+
+        }
+        now += root.val;
+        solve(root.left, sum, now);
+        solve(root.right, sum, now);
+        now -= root.val;
+        solve(root.left, sum, now);
+        solve(root.right, sum, now);
     }
 }
