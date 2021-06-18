@@ -14,9 +14,10 @@ public class Sort {
 
     static int[] a = {11, 1, 2, 3, 4, 5, 6, 7, 7, 8};
     static int[] m = new int[20];
+
     public static void main(String[] args) {
 
-        ThreadLocal threadLocal =new ThreadLocal();
+        ThreadLocal threadLocal = new ThreadLocal();
 
         Thread t = new Thread(() -> {
             System.out.println(123);
@@ -40,8 +41,8 @@ public class Sort {
             System.out.print("=" + i);
         }
         Sort sort = new Sort();
-        sort.quickSortA(arr, 0, arr.length - 1);
-//        sort.mergeSort(arr,0, arr.length);
+//        sort.quickSortA(arr, 0, arr.length - 1);
+        sort.mergeSort(arr, 0, arr.length - 1);
 //        sort.bubbleSort(arr,arr.length);
 //        sort.selectSort(arr, arr.length);
 //        sort.insertSort(arr, arr.length);
@@ -51,6 +52,7 @@ public class Sort {
             System.out.print(i + ",");
         }
     }
+
     static void heapSort(int[] a, int n) {
 
     }
@@ -107,26 +109,33 @@ public class Sort {
 
     }
 
+    /**
+     * [left,right) 前闭后开, 屎一样, , 前闭后闭  最好不过
+     *
+     * @param a
+     * @param left
+     * @param right
+     */
     static void mergeSort(int[] a, int left, int right) {
-        if (left >= right)
+        if (left == right)
             return;
-        int mid = (left + right) >> 1;
-        mergeSort(a, left, mid);
-        mergeSort(a, mid + 1, right);
+        int mid = left + ((right - left) >> 1);
+        mergeSort(a, left, mid); // [left,mid]
+        mergeSort(a, mid + 1, right);// [mid+1,right]
         merge(a, left, mid, right);
     }
 
     private static void merge(int[] a, int left, int mid, int right) {
-        int i = left, j = mid, k = 0;
-        while (i < mid && j < right) {
+        int i = left, j = mid + 1, k = left;
+        while (i <= mid && j <= right) {
             if (a[i] > a[j]) {
                 m[k++] = a[j++];
             } else if (a[i] <= a[j]) {
                 m[k++] = a[i++];
             }
         }
-        while (i < mid) m[k++] = a[i++];
-        while (j < right) m[k++] = a[j++];
+        while (i <= mid) m[k++] = a[i++];
+        while (j <= right) m[k++] = a[j++];
         for (int l = left; l < k; l++) {
             a[l] = m[l];
         }
@@ -176,11 +185,13 @@ public class Sort {
         quickSortA(a, left, lo - 1);
         quickSortA(a, lo + 1, right);
     }
-    int[]num = new int[10];
-    void init(){
-        num[0]=10 ;
-        for(int i = 1 ;i< num.length;i++){
-            num[i]=num[i-1]+2;
+
+    int[] num = new int[10];
+
+    void init() {
+        num[0] = 10;
+        for (int i = 1; i < num.length; i++) {
+            num[i] = num[i - 1] + 2;
         }
 
     }

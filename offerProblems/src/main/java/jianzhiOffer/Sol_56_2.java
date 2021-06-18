@@ -8,7 +8,7 @@ import java.util.HashMap;
  * @author: WhyWhatHow
  * @create: 2020-05-22 08:10
  **/
-public class Sol_56 {
+public class Sol_56_2 {
 
     public int singleNumber(int[] nums) {
         HashMap<Integer, Integer> map = new HashMap<>();
@@ -26,7 +26,7 @@ public class Sol_56 {
     }
 
     public static void main(String[] args) {
-        Sol_56 sol = new Sol_56();
+        Sol_56_2 sol = new Sol_56_2();
 
         System.out.println("=======");
     }
