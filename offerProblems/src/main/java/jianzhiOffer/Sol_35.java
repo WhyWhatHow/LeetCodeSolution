@@ -6,17 +6,7 @@ package jianzhiOffer;
  * @author: WhyWhatHow
  * @create: 2020-05-22 08:10
  **/
-class Node {
-    int val;
-    Node next;
-    Node random;
 
-    public Node(int val) {
-        this.val = val;
-        this.next = null;
-        this.random = null;
-    }
-}
 
 public class Sol_35 {
 
@@ -65,7 +55,17 @@ public class Sol_35 {
         return res;
     }
 
+    static class Node {
+        int val;
+        Node next;
+        Node random;
 
+        public Node(int val) {
+            this.val = val;
+            this.next = null;
+            this.random = null;
+        }
+    }
     public static void main(String[] args) {
         Sol_35 sol = new Sol_35();
         Node head = new Node(1);
@@ -76,3 +76,4 @@ public class Sol_35 {
         System.out.println("=======");
     }
 }
+
