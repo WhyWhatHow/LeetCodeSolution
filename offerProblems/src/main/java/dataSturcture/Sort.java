@@ -144,7 +144,7 @@ public class Sort {
 
     /**
      * 快排每次确定一个位置
-     * step :
+     * step : [left,right]
      * 1 .选取比较元素，
      * 2. 确定元素位置
      * 3. 递归处理余下部分
