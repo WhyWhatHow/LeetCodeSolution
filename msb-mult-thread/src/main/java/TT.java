@@ -15,6 +15,7 @@ public class TT {
 //        3     0000011
 //
         System.out.println(1&0);
+        System.out.println("你好,谁接");
     }
 
 

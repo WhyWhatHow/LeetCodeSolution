@@ -70,6 +70,7 @@ public class DemoLRUArray {
     }
 
     public static void main(String[] args) {
+        System.out.println("你好吗" );
         Integer[] a = new Integer[]{7, 0, 1, 2, 0, 3, 0, 4,2,3,0,3,2,1,2,0,1,7,0,1};
         DemoLRUArray lru =new DemoLRUArray();
 
