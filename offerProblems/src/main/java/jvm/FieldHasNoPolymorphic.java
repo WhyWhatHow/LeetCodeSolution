@@ -25,6 +25,7 @@ public class FieldHasNoPolymorphic {
 
             showMeTheMoney();
         }
+        @Override
         public void showMeTheMoney() {
             System.out.println("I am Son,  i have $" + money);
         }
