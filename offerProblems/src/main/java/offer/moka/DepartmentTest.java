@@ -1,9 +1,6 @@
 package offer.moka;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @program: LeetCodeSolution
@@ -30,21 +27,51 @@ public class DepartmentTest {
 
 
 //        List<Department> subDepartments = DepartmentTest.getSub2(3, allDepartment);// bfs+ list实现
-        List<Department> subDepartments = DepartmentTest.getSub(3, allDepartment);// 利用bfs + hashmap实现
-
-        for (Department subDepartment : subDepartments) {
-            System.out.println(subDepartment);
+        List<Department> subDepartments = DepartmentTest.getSub(6, allDepartment);// 利用bfs + hashmap实现
+        int[] arr = new int[]{0, 1, 3, 4, 6, 7, 8};
+        for (int i : arr) {
+            List list = subList(i, allDepartment);
+            System.out.println("'========================test ====================");
+            list.forEach(val -> System.out.println(val));
+            System.out.println("==========================end =====================");
         }
+//        for (Department subDepartment : subDepartments) {
+//            System.out.println(subDepartment);
+//        }
     }
 
     /**
      * 根据id，获取所有子部门列表(包括隔代子部门)
-     *  bfs 实现
+     * bfs 实现
+     *
      * @param id
      * @return
      */
 
-    List<Department> list = new LinkedList<>();
+    LinkedList list = new LinkedList<>();
+
+    static List subList(int id, List<Department> allDeps) {
+        HashMap<Integer, LinkedList> map = new HashMap<>();
+        allDeps.forEach(dep -> {
+            List orDefault = map.getOrDefault(dep.getPid(), new LinkedList());
+            orDefault.add(dep);
+            map.put(dep.getPid(), (LinkedList) orDefault);
+        });
+        LinkedList resList = new LinkedList();
+        LinkedList list = map.get(id);
+        if (list == null || list.size() == 0) {
+            return list;
+        }
+        while (!list.isEmpty()) {
+            Department temp = (Department) list.removeFirst();
+            resList.add(temp);
+            if (map.containsKey(temp.getId())) {
+                list.addAll(map.get(temp.getId()));
+            }
+        }
+        return resList;
+
+    }
 
     public static List<Department> getSub2(int id, List<Department> allDepartment) {
 
@@ -76,7 +103,8 @@ public class DepartmentTest {
 
     /**
      * 根据id，获取所有子部门列表(包括隔代子部门)
-     *   hashmap 实现
+     * hashmap 实现
+     *
      * @param id
      * @return
      */
@@ -90,6 +118,9 @@ public class DepartmentTest {
             map.put(department.getPid(), orDefault);
         }
         list = map.get(id);
+        if (list == null) {
+            return list;
+        }
         while (!list.isEmpty()) {
             Department department = list.removeFirst();
             resList.addFirst(department);
@@ -106,7 +137,7 @@ public class DepartmentTest {
 ////        allDepartment.stream().
 //    }
 
-        static class Department {
+    static class Department {
         /**
          * id
          */
