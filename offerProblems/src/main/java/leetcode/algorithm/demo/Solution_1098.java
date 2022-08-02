@@ -6,15 +6,10 @@ package leetcode.algorithm.demo;
  * @author: WhyWhatHow
  **/
 
-public class Solution_213 {
-    public int rob(int[] nums) {
-        if (nums.length == 1) {
-            return nums[0];
-        }
-        return 0;
-    }
+public class Solution_1098 {
+
     public static void main(String[] args) {
-        Solution_213 sol = new Solution_213();
+        Solution_1098 sol = new Solution_1098();
         System.out.println("==================");
     }
 }
