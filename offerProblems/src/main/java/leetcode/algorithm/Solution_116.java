@@ -8,7 +8,7 @@ import java.util.List;
  * @program: LeetCodeSolution
  * @description:
  * @author: WhyWhatHow
- * @create: 2020-05-07 12:09
+
  **/
 class Node {
     public int val;

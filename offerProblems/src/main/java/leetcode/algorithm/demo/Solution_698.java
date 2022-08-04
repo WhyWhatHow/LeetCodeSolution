@@ -12,6 +12,9 @@ public class Solution_698 {
         Solution_698 sol = new Solution_698();
         System.out.println("==================");
     }
+    /**
+     * wrong , 思路: 回溯
+     */
     public boolean canPartitionKSubsets(int[] nums, int k) {
         boolean res =false;
         int sum = 0 ;
