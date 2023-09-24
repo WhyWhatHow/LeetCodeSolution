@@ -1,15 +1,11 @@
 package leetcode.algorithm;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * @program: LeetCodeSolution
  * @description:
  * @author: WhyWhatHow
-
  **/
 
 public class Solution_15 {
@@ -26,6 +22,7 @@ public class Solution_15 {
      * step 4 ; nums.forj  from i+1, to length-1
      * step 5 : binarySearh from j+1, to length , get index i of nums
      * step 6 : handle i && create List<a,b,c>
+     *
      * @param nums
      * @return
      */
@@ -50,7 +47,7 @@ public class Solution_15 {
                     list1.add(nums[j]);
                     list1.add(nums[k]);
                     list.add(list1);
-                    map.put(nums[k],true);
+                    map.put(nums[k], true);
                 }
 //                for (int k = j+1; k < nums.length; k++) {
 //                    if(nums[k]+temp==0){
@@ -68,14 +65,45 @@ public class Solution_15 {
         List<List<Integer>> lists = sol.threeSum(
 //                new int[]{0,0,0,0,0}
 //                new int[]{-4,-2,-2,-2,0,1,2,2,2,3,3,4,4,6,6}
-                new  int[] {-1, 0, 1, 2, -1, -4, -2, -3, 3, 0, 4}
+                new int[]{-1, 0, 1, 2, -1, -4, -2, -3, 3, 0, 4}
 //                new int[]{-1, 0, 1, 2, -1, -4}
-                );
+//                new int[]{0,0,0}
+        );
         System.out.println(lists.size());
         lists.forEach(x -> System.out.println(x.toString()));
-
+        System.out.println("=============================================");
+        List<List<Integer>> lists1 = sol.threeSum2(new int[]{-1, 0, 1, 2, -1, -4, -2, -3, 3, 0, 4});
+        lists1.forEach(x -> System.out.println(x.toString()));
         System.out.println("==================");
     }
+    // use hashMap instead of Arrays.BinarySearch()-> o(n(logn))-> o(1)
+    public List<List<Integer>> threeSum2(int[] nums) {
+        Arrays.sort(nums);
+        List res = new ArrayList<>();
+        HashMap map = new HashMap();
+        for (int i = 0; i < nums.length; i++) {
+            map.put(nums[i], i);
+        }
+        HashSet set = new HashSet();
+        for (int i = 0; i < nums.length; i++) {
+            set.clear(); // remove dup
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            for (int j = i + 1; j < nums.length - 1; j++) {
+                int temp = -(nums[i] + nums[j]);
+                Integer k = (Integer) map.getOrDefault(temp, -1);
+                if (k !=-1 && i<k && j<k && !set.contains(temp)) {
+                    List list = new ArrayList();
+                    list.add(nums[i]);
+                    list.add(nums[j]);
+                    list.add(nums[k]);
+                    set.add(temp);
+                    res.add(list);
+                }
+            }
+        }
+        return res;
+    }
+
 }
 
 
