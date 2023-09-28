@@ -17,7 +17,8 @@ public class Solution_84 {
         System.out.println(sol.largestRectangleArea(new int[]{
 //                2, 1, 5, 6, 2, 3
 //                2, 4
-                2,1,2
+//                2,1,2
+                4,0,3,2,5
         }));
     }
 
@@ -31,6 +32,7 @@ public class Solution_84 {
 
             while (!stack.empty() && h[stack.peek()] > h[i]) {
                 Integer pop = stack.pop();
+                //
                 int left = stack.empty() ? 0 : stack.peek()+1;
                 int width = i - left;
                 int area = width * h[pop];
