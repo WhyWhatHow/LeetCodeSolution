@@ -1,4 +1,4 @@
-package leetcode.algorithm.demo;
+package leetcode.algorithm.pq;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
