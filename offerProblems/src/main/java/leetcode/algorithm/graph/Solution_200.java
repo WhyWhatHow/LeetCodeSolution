@@ -1,5 +1,7 @@
 package leetcode.algorithm.graph;
 
+import java.util.LinkedList;
+
 /**
  * @program: LeetCodeSolution
  * @description:
@@ -26,7 +28,8 @@ public class Solution_200 {
             for (int j = 0; j < grid[i].length; j++) {
                 if (grid[i][j] == '1' && !vis[i][j]) {
                     res++;
-                    dfs(grid, i, j, vis);
+                    bfs(grid, i, j, vis);
+//                    dfs(grid, i, j, vis);
                 }
             }
         }
@@ -50,7 +53,27 @@ public class Solution_200 {
     }
 
     void bfs(char[][] grid, int x, int y, boolean[][] vis) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+        LinkedList<int[]> queue = new LinkedList<>();
+        queue.add(new int[]{x, y});
 
+        while (!queue.isEmpty()) {
+            int[] poll = queue.poll();
+            int ix = poll[0];
+            int iy = poll[1];
+
+            if (ix < 0 || iy < 0 || ix >= rows || iy >= cols || grid[ix][iy] == '0' || vis[ix][iy]) {
+                continue;
+            }
+
+            vis[ix][iy] = true;
+
+            for (int i = 0; i < xx.length; i++) {
+                queue.add(new int[]{ix + xx[i], iy + yy[i]});
+            }
+
+        }
     }
 }
 
