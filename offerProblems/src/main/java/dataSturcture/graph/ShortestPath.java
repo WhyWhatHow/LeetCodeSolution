@@ -1,5 +1,11 @@
 package dataSturcture.graph;
 
+import leetcode.algorithm.dsa.Edge;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.PriorityQueue;
+
 /**
  * @program: LeetCodeSolution
  * @description: 最短路径
@@ -7,15 +13,6 @@ package dataSturcture.graph;
  * @create: 2023-10-07 10:51
  **/
 public class ShortestPath {
-    class Node {
-        int from, to, val;
-
-        public Node(int from, int to, int val) {
-            this.from = from;
-            this.to = to;
-            this.val = val;
-        }
-    }
 
     public static void main(String[] args) {
         int[][] graph = {
@@ -34,10 +31,21 @@ public class ShortestPath {
             }
             System.out.println();
         }
+
+        // dijkstra ...///////////////
+        System.out.println("///////////////////////////////////////////////////////////");
+        int[][] graph2 = {
+                {Integer.MAX_VALUE,5,Integer.MAX_VALUE,10},
+                {Integer.MAX_VALUE,Integer.MAX_VALUE,3,Integer.MAX_VALUE},
+                {Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,1},
+                {Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE}
+        };
+        System.out.println(dijkstraEdge(graph2, 4, 0));
     }
 
     /**
      * 最短路径 floyd 算法 if exist node k, that dist[i][j] < dist[i][k]+dist[k][j] ,then dist[i][j]= dist[i][k]+dist[k][j]
+     *
      * @param grid
      * @return
      */
@@ -64,6 +72,51 @@ public class ShortestPath {
             }
         }
         return dist;
+    }
+
+    public static int[] dijkstraEdge(int[][] grid, int n, int start) {
+        int[] dist = new int[n + 1]; //
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[start] = 0;
+
+        // init graph
+        ArrayList<Edge>[] graph = initGraph(grid, n);
+
+        // init pq
+        PriorityQueue<Edge> pq = new PriorityQueue<>((a, b) -> a.val - b.val);
+        pq.add(new Edge(start, 0));
+        while (!pq.isEmpty()) {
+            Edge poll = pq.poll();
+            int to = poll.to;
+            int val = poll.val;
+            if (dist[to] < val) continue;
+
+            for (int i = 0; i < graph[to].size(); i++) {
+                Edge edge = graph[to].get(i);
+                int temp = edge.val + dist[to];
+                if (temp < dist[edge.to]) {
+                    dist[edge.to] = temp;
+                    pq.add(new Edge(edge.to, temp));
+                }
+            }
+        }
+        return dist;
+    }
+
+    private static ArrayList<Edge>[] initGraph(int[][] grid, int n) {
+
+        ArrayList<Edge>[] graph = new ArrayList[n + 1];
+        for (int i = 0; i < graph.length; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == Integer.MAX_VALUE)
+                    continue;
+                graph[i].add(new Edge(j, grid[i][j]));
+            }
+        }
+        return graph;
     }
 
 }
