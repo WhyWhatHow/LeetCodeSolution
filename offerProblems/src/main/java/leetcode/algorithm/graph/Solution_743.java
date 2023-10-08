@@ -1,4 +1,4 @@
-package leetcode.algorithm.demo;
+package leetcode.algorithm.graph;
 
 import java.util.ArrayList;
 import java.util.Arrays;
