@@ -1,4 +1,4 @@
-package dataSturcture;
+package dsa.tree;
 
 import java.util.LinkedList;
 
