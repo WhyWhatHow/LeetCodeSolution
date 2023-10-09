@@ -1,4 +1,4 @@
-package dataSturcture.graph;
+package dsa.graph;
 
 import leetcode.algorithm.dsa.Edge;
 
