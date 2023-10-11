@@ -1,8 +1,7 @@
-package leetcode.algorithm;
+package leetcode.algorithm.tree;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * @program: LeetCodeSolution
@@ -32,7 +31,7 @@ class Node {
 };
 
 public class Solution_116 {
-    public Node connect(Node root) {
+    public Node connect2(Node root) {
         if (root == null) {
             return null;
         }
@@ -75,18 +74,44 @@ public class Solution_116 {
 //         return tempList;
     }
 
-    //    java.lang.IndexOutOfBoundsException: Index -1 out of bounds for length 0
-//    at line 64, java.base/jdk.internal.util.Preconditions.outOfBounds
-//    at line 70, java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex
-//    at line 248, java.base/jdk.internal.util.Preconditions.checkIndex
-//    at line 373, java.base/java.util.Objects.checkIndex
-//    at line 426, java.base/java.util.ArrayList.get
-//    at line 63, Solution.dealWithTemplist
-//    at line 48, Solution.connect
-//    at line 177, __Driver__.main
     public static void main(String[] args) {
         Solution_116 sol = new Solution_116();
         System.out.println("==================");
+    }
+
+
+    public Node connect(Node root) {
+        if(root == null) return root ;
+        LinkedList<Node> q = new LinkedList<>();
+        q.add(root);
+        while(!q.isEmpty()){
+            int size = q.size();
+            // two pointer, prev -> node
+            Node prev = q.poll();
+            handle(prev,q);
+
+            for(int i = 1 ; i< size; i++){
+                if( i == size - 1){
+                    prev.next = null ;
+                }
+                Node node= q.poll();
+                prev.next = node ;
+                prev = node;
+                handle(node, q);
+            }
+            // handle the latest node of this level
+            prev.next = null ;
+        }
+        return root ;
+    }
+    // add node.left&& node.right to queue
+    void handle(Node node , LinkedList<Node> q){
+        if(node.left != null) {
+            q.add(node.left);
+        }
+        if(node.right != null){
+            q.add(node.right);
+        }
     }
 }
 
