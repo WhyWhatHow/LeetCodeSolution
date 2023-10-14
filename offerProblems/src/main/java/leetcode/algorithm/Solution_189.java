@@ -8,7 +8,28 @@ package leetcode.algorithm;
  **/
 
 public class Solution_189 {
+    // o(1)space
     public void rotate(int[] nums, int k) {
+        if (nums.length == 1) return;
+        k = k % nums.length;
+        reverse(nums, 0, nums.length - 1);
+        reverse(nums, 0, k - 1);
+        reverse(nums, k, nums.length - 1);
+        return;
+    }
+
+    void reverse(int[] a, int start, int end) {
+        while (start < end) {
+            int temp = a[start];
+            a[start] = a[end];
+            a[end] = temp;
+            start++;
+            end--;
+        }
+    }
+
+    // o(n) space
+    public void rotate2(int[] nums, int k) {
         int[] arrs = new int[nums.length];
         for (int i = 0; i < nums.length; i++) {
             arrs[(i + k) % nums.length] = nums[i];// 可以不用算,吗直接移位
