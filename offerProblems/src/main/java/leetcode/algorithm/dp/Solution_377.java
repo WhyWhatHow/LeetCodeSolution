@@ -15,6 +15,9 @@ public class Solution_377 {
         System.out.println(i);
     }
 
+/**
+ * 类比爬楼梯, nums[i]  表示一次可以爬的楼梯数量
+ */
     public int combinationSum4(int[] nums, int target) {
         int[] dp = new int[target + 1];
         dp[0] = 1;
@@ -28,25 +31,7 @@ public class Solution_377 {
         return dp[target];
     }
 
-//    int cnt = 0;
-//    LinkedList tempList = new LinkedList();
-//
-//    private void dfs(int[] nums, int target, int start) {
-//        if (target < 0) return;
-//        if (target == 0) {
-//            cnt++;
-//            tempList.forEach(System.out::print);
-//            System.out.println("========");
-//            return;
-//        }
-//        for (int i = 0; i < nums.length; i++) {
-//            target -= nums[i];
-//            tempList.push(nums[i]);
-//            dfs(nums, target, i);
-//            target += nums[i];
-//            tempList.pop();
-//        }
-//    }
+
 
 }
 
