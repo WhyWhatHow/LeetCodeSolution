@@ -36,16 +36,17 @@ public class TreeNode {
         LinkedList<TreeNode> list = new LinkedList<>();
         list.add(root);
         while (!list.isEmpty()) {
-            TreeNode peek = list.peek();
-            list.pop();
-            if (list.isEmpty())
-                System.out.println(peek.val);
-            else
+            int size = list.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode peek = list.peek();
+                list.pop();
                 System.out.print(peek.val + " , ");
-            if (peek.left != null)
-                list.add(peek.left);
-            if (peek.right != null)
-                list.add(peek.right);
+                if (peek.left != null)
+                    list.add(peek.left);
+                if (peek.right != null)
+                    list.add(peek.right);
+            }
+            System.out.println();
         }
     }
 }
