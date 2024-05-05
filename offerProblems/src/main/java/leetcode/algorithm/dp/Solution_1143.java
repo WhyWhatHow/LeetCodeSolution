@@ -19,6 +19,16 @@ public class Solution_1143 {
         System.out.println("==================");
     }
 
+    /**
+     * dp[i][j] t1 前i 个字符 ,和t2 前j 字符的lcs 长度.
+     * x[i-1] == y[j-1]
+     *      ==> dp[i][j] = dp[i-1][j-1]+1
+     * else :
+     *      dp[i][j] = max(dp[i-1][j],dp[i][j-1]);
+     * @param text1
+     * @param text2
+     * @return
+     */
     public int longestCommonSubsequence(String text1, String text2) {
         int[][] dp = new int[text1.length() + 1][text2.length() + 1];
         char[] x = text1.toCharArray();
