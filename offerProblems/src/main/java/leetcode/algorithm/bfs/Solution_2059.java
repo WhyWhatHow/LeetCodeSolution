@@ -88,6 +88,11 @@ public class Solution_2059 {
                         map.put(i, cnt + 1);
                         q.add(i);
                     }
+//                    if (i < 0 || i > 1000 || map.containsKey(i)) {
+//                        continue;
+//                    }
+//                    map.put(i, cnt + 1);
+//                    q.add(i);
                 }
             }
 
