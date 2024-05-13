@@ -84,10 +84,12 @@ public class Solution_2059 {
                     if (i == goal) {
                         return cnt + 1;
                     }
+                    // better performance
                     if (i >= 0 && i <= 1000 && !map.containsKey(i)) {
                         map.put(i, cnt + 1);
                         q.add(i);
                     }
+                    // bad example
 //                    if (i < 0 || i > 1000 || map.containsKey(i)) {
 //                        continue;
 //                    }
