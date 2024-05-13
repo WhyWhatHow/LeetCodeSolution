@@ -21,13 +21,66 @@ public class Solution_994 {
 //                [[2,1,1],[1,1,0],[0,2,1]]
                 {2, 1, 1},
                 {1, 1, 0},
-                {0, 2, 1}
+                {0, 1, 1}
         }));
     }
 
+    // bfs
+    public int orangesRotting(int[][] grid) {
+        int cnt = 0;
+        var q = new LinkedList<int[]>(); // int[] ==>grid[x][y],{x,y}
+        int n = grid.length;
+        int m = grid[0].length;
+        boolean[][] v = new boolean[n][m];
+        // init
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == 2) {
+                    v[i][j] = true;
+                    q.add(new int[]{i, j});
+                } else if (grid[i][j] == 1) {
+                    cnt++;
+                }
+            }
+        }
+
+        if (cnt == 0) return 0;
+
+        // bfs
+        int res = 0;
+        while (!q.isEmpty()) {
+            int size = q.size();
+
+            for (int i = 0; i < size; i++) {
+                int[] now = q.poll();
+                for (int j = 0; j < d.length - 1; j++) {
+                    int x = now[0] + d[j];
+                    int y = now[1] + d[j + 1];
+
+                    // border check
+                    if (x < 0 || y < 0 || x >= n || y >= m) continue;
+
+                    if (grid[x][y] == 1 && !v[x][y]) {
+                        cnt--;
+                        v[x][y] = true;
+                        grid[x][y] = 2;
+                        q.add(new int[]{x, y});
+                    }
+                }
+            }
+            res++;
+            if (cnt == 0) break;
+        }
+        return cnt == 0 ? res : -1;
+    }
+
+    // x 0,1,0,-1
+    // y 1,0,-1,0 (0,1)(1,0),(-1,0)
+    int[] d = new int[]{0, 1, 0, -1, 0};
+
     int cnt = 0;
 
-    public int orangesRotting(int[][] grid) {
+    public int orangesRottingOld(int[][] grid) {
         int res = 0;
 
         boolean[][] vis = new boolean[grid.length][grid[0].length];
