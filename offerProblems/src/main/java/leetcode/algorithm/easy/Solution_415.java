@@ -26,43 +26,21 @@ public class Solution_415 {
         int i = ns.length - 1;
         int j = nss.length - 1;
         char zero = '0';
-        boolean up = false;
-        while (i >= 0 && j >= 0) {
-            int val = ns[i--] - zero + nss[j--] - zero;
-            val = up ? val + 1 : val;
+        int carry = 0; // 进位标记
+        int val = 0;
+        while (i >= 0 || j >= 0) {
+            int a = i >= 0 ? ns[i--] - zero : 0;
+            int b = j >= 0 ? nss[j--] - zero : 0;
+            val = a + b + carry;
             if (val >= 10) {
                 val -= 10;
-                up = true;
+                carry = 1;
             } else {
-                up = false;
-            }
-            builder.append(val);
-
-        }
-
-        while (i >= 0) {
-            int val = ns[i--] - zero;
-            val = up ? val + 1 : val;
-            if (val >= 10) {
-                val -= 10;
-                up = true;
-            } else {
-                up = false;
+                carry = 0;
             }
             builder.append(val);
         }
-        while (j >= 0) {
-            int val = nss[j--] - zero;
-            val = up ? val + 1 : val;
-            if (val >= 10) {
-                val -= 10;
-                up = true;
-            } else {
-                up = false;
-            }
-            builder.append(val);
-        }
-        if (up) builder.append(1);
+        if (carry > 0) builder.append(carry);
         return builder.reverse().toString();
     }
 
