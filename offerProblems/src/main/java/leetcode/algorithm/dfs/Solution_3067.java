@@ -43,7 +43,8 @@ public class Solution_3067 {
         // visit all order to get ans
 
         for (int i = 0; i < ans.length; i++) {
-
+            // not leaf
+            if (graph[i].size() <= 1) continue;
             int sum = 0;
             for (int[] e : graph[i]) {
                 int cnt = dfs(e[0], i, e[1], graph, signalSpeed);
