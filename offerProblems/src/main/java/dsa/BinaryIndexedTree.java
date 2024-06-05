@@ -53,6 +53,16 @@ public class BinaryIndexedTree {
             System.out.println(tree.query(i));
         }
 
+
+        // 测试更新操作
+        tree.update(3, 15); // 将索引 3 的值更新为 15
+        System.out.println("After update:");
+        for (int i = 0; i < arr.length; i++) {
+            System.out.println("Prefix sum of index " + i + ": " + tree.query(i));
+        }
+
+        // 测试区间和查询
+        System.out.println("Sum of range [2, 5]: " + tree.queryRange(2, 5)); // 输出区间 [2, 5] 的和
     }
 }
 
