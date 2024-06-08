@@ -1,5 +1,7 @@
 package leetcode.algorithm.dp;
 
+import java.util.Arrays;
+
 /**
  * @program: LeetCodeSolution
  * @description: #binary Indexed Array
@@ -17,9 +19,6 @@ public class Solution_3040 {
         System.out.println("==================");
     }
 
-    public int maxOperationsMEM(int[] nums) {
-    return 0 ;
-    }
 
     public int maxOperationsDP(int[] nums) {
         if (nums.length < 2) return 0;
@@ -64,6 +63,28 @@ public class Solution_3040 {
         return dp[start][end] + 1;
     }
 
+    public int maxOperations(int[] nums) {
+        int ans = 0;
+        int n = nums.length;
+        mem = new int[n + 1][n + 1];
+        ans = Math.max(ans, helper(2, n - 1, nums[0] + nums[1], nums));
+        ans = Math.max(ans, helper(1, n - 2, nums[0] + nums[n - 1], nums));
+        ans = Math.max(ans, helper(0, n - 3, nums[n - 1] + nums[n - 2], nums));
+
+        return ans;
+    }
+
+    // [start,end]
+    private int helper(int start, int end, int target, int[] nums) {
+
+        for (int[] ints : mem) {
+            Arrays.fill(ints, -1);
+        }
+        return dfs(start, end, target, nums);
+    }
+
+    int[][] mem;
+
     /**
      * dfs(i,j) --> [i,j] 内的 ==target 的最大值
      *
@@ -75,19 +96,19 @@ public class Solution_3040 {
      */
     private int dfs(int start, int end, int target, int[] nums) {
         if (start >= end) return 0;
+        if (mem[start][end] != -1) return mem[start][end];
+        int res = 0;
         if (nums[start] + nums[start + 1] == target)
-            return dfs(start + 2, end, target, nums) + 1;
+            res = Math.max(res, dfs(start + 2, end, target, nums) + 1);
         if (nums[start] + nums[end] == target) {
-            return dfs(start + 1, end - 1, target, nums) + 1;
+            res = Math.max(res, dfs(start + 1, end - 1, target, nums) + 1);
         }
-        if (nums[end - 1] + nums[end - 2] == target) {
-            return dfs(start, end - 2, target, nums) + 1;
+        if (nums[end - 1] + nums[end] == target) {
+            res = Math.max(res, dfs(start, end - 2, target, nums) + 1);
         }
-        return 0;
+        mem[start][end] = res;
+        return res;
     }
-//    int dfs(){
-//
-//    }
 
 }
 
