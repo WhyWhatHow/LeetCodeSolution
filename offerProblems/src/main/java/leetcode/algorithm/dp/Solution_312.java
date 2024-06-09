@@ -47,7 +47,7 @@ public class Solution_312 {
 
         // running
         for (int len = 3; len <= n + 2; len++) {
-            for (int l = 0; l + len - 1 < n + 2; l++) {
+            for (int l = 0; l + len - 1 < n + 2; l++) { //r= l+len-1 , r < n+2
                 int r = l + len - 1;
                 for (int k = l + 1; k < r; k++) {
                     f[l][r] = Math.max(f[l][r], f[l][k] + arr[l] * arr[r] * arr[k] + f[k][r]);
