@@ -29,7 +29,7 @@ nbdist/
 .nb-gradle/
 
 ### maven ###
-target/
+offer-algorithms/target/
 *.war
 *.ear
 *.zip
