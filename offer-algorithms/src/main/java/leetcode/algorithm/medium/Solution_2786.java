@@ -36,9 +36,9 @@ public class Solution_2786 {
         for (int i = 1; i < nums.length; i++) {
             // even
             if ((nums[i] & 1) == 0) {
-                evenSum = Math.max(evenSum, Math.max(evenSum + nums[i], oddSum + nums[i] - x));
+                evenSum = Math.max(evenSum + nums[i], oddSum + nums[i] - x);
             } else {
-                oddSum = Math.max(oddSum, Math.max(oddSum + nums[i], evenSum + nums[i] - x));
+                oddSum = Math.max(oddSum + nums[i], evenSum + nums[i] - x);
             }
         }
         return Math.max(evenSum, oddSum);
