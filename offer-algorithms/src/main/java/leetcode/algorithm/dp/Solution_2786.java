@@ -1,4 +1,4 @@
-package leetcode.algorithm.medium;
+package leetcode.algorithm.dp;
 
 /**
  * @program: LeetCodeSolution
@@ -20,8 +20,15 @@ public class Solution_2786 {
 
     /**
      * 两种选择,
-     * 奇偶性相同 : 相加
+     * 奇偶性相同 : sum+nums[i]
      * 奇偶性不同: sum+nums[i]-x
+     * 初始化:
+     * oddSum : 奇数之和
+     * evenSum: 偶数之和
+     * res = max(oddSum, evenSum)
+     * 那么 oddSum=nums[0] 时, evenSum =?
+     * if evenSum =0 , eg: [3,2],5,
+     * #think
      *
      * @param nums
      * @param x
@@ -55,35 +62,26 @@ public class Solution_2786 {
      * @param x
      * @return
      */
-    public long maxScoreWrong(int[] nums, int x) {
+    public long maxScoreDP(int[] nums, int x) {
         long res = nums[0];
         long[] f = new long[nums.length];
+        long oddSum = 0, evenSum = 0;
         f[0] = nums[0];
-
+        if ((nums[0] & 1) == 0) evenSum = nums[0];
+        else oddSum = nums[0];
         for (int i = 1; i < nums.length; i++) {
-            if (isSame(nums[i], f[i - 1])) {
-                f[i] = Math.max(f[i - 1], f[i - 1] + nums[i]);
+
+            // even
+            if ((nums[i] & 1) == 0) {
+                f[i] = Math.max(evenSum, oddSum - x) + nums[i];
+                evenSum = Math.max(evenSum,f[i]);
             } else {
-                long temp = f[i - 1] + nums[i] - x;
-                // nums[i] is different for nums[i-1
-                int k = i - 1;
-                while (k > 0 && isSame(nums[k], nums[i])) {
-                    temp += nums[k--];
-                }
-                f[i] = Math.max(f[i - 1], temp);
+                f[i] = Math.max(oddSum, evenSum - x) + nums[i];
+                oddSum = Math.max(oddSum,f[i]);
             }
-            res = Math.max(f[i], res);
         }
 
-        return res;
-    }
-
-    boolean isSame(long a, long b) {
-        return isEven(a) == isEven(b);
-    }
-
-    boolean isEven(long num) {
-        return (num & 1) == 0;
+        return f[nums.length - 1];
     }
 }
 
