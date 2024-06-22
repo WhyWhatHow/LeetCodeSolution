@@ -1,5 +1,7 @@
 package leetcode.algorithm.greedy;
 
+import java.util.Arrays;
+
 /**
  * @program: LeetCodeSolution
  * @description:
@@ -14,11 +16,34 @@ public class Solution_45 {
         System.out.println(sol.jump(new int[]{
 //              2,3,1,1,4
 //              2, 0, 3, 1, 4
-            7,0,9,6,9,6,1,7,9,0,1,2,9,0,3
+                7, 0, 9, 6, 9, 6, 1, 7, 9, 0, 1, 2, 9, 0, 3
         }));
     }
 
+    // dp 做法
     public int jump(int[] nums) {
+        int[] f = new int[nums.length]; // f[i] == [0,i] min jump step
+        Arrays.fill(f, 1001);
+        f[0] = 0; // init position
+
+        // f[i] = min(f[i],f[j]+1)
+        for (int j = 0; j < f.length; j++) {
+            for (int i = j + 1; i < f.length; i++) {
+                if (i <= j + nums[j]) {
+                    f[i] = Math.min(f[i], f[j] + 1);
+                }
+            }
+        }
+        return f[nums.length - 1];
+    }
+
+    /**
+     * greedy 做法
+     *
+     * @param nums
+     * @return
+     */
+    public int jumpGreedy(int[] nums) {
         int cnt = 0;
         if (nums.length == 1) return cnt;
 
