@@ -1,4 +1,4 @@
-package leetcode.algorithm.demo;
+package leetcode.algorithm.mstack;
 
 import java.util.Arrays;
 import java.util.Stack;
