@@ -14,13 +14,21 @@ public class Solution_1345 {
 
     public static void main(String[] args) {
         Solution_1345 sol = new Solution_1345();
-        HashMap<Integer, Integer> map = new HashMap<>();
-        map.put(1, 1);
-        map.put(1, 2);
-        System.out.println(map.get(1));
+//        HashMap<Integer, Integer> map = new HashMap<>();
+//        map.put(1, 1);
+//        map.put(1, 2);
+//        System.out.println(map.get(1));
+        System.out.println(sol.minJumps(new int[]{7,7,2,1,7,7,7,3,4,1}));
         System.out.println("==================");
     }
 
+    /**
+     * bfs: 将 idx-1, idx+1, arr[i]==a[j] && i!=j  入队
+     * key point: 不要重复入队, 比如 arr[i] ==arr[j] , 因为j 以入队, 切同类型的值已经处理, 所以需要避免大量无用操作.
+     *
+     * @param arr
+     * @return
+     */
     public int minJumps(int[] arr) {
         //init
         HashMap<Integer, ArrayList<Integer>> map = new HashMap<>();
