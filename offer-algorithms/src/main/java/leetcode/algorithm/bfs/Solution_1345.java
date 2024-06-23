@@ -61,6 +61,7 @@ public class Solution_1345 {
                         q.add(new int[]{i, step + 1});
                     }
                 }
+                // #important : avoid more invalid ops about `add in queue`.
                 map.remove(arr[idx]);
             }
 
