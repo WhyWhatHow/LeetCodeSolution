@@ -1,10 +1,8 @@
 package leetcode.algorithm.demo;
 
-import java.util.Arrays;
-
 /**
  * @program: LeetCodeSolution
- * @description: #binary Indexed Array
+ * @description: #
  * @author: WhyWhatHow
  **/
 
