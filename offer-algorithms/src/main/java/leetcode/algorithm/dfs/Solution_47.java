@@ -1,6 +1,7 @@
-package leetcode.algorithm;
+package leetcode.algorithm.dfs;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -54,12 +55,47 @@ public class Solution_47 {
 
     public static void main(String[] args) {
         Solution_47 sol = new Solution_47();
-        List<List<Integer>> lists = sol.permuteUnique(new int[]{
+        List<List<Integer>> lists = sol.permuteUniqueBetter(new int[]{
 //                1, 1, 2
         3,3,0,3
         });
         System.out.println("==================");
     }
+
+    /**
+     *  dfs better, 不需要其他的一些乱七八糟的判断. 貌似写了这段时间的代码确实是有进步的.nice!
+     */
+        List resList = new LinkedList<List>();
+        LinkedList<Integer> list = new LinkedList<>();
+
+        public List<List<Integer>> permuteUniqueBetter(int[] nums) {
+
+            boolean[] vis = new boolean[nums.length];
+            dfs(nums, vis);
+            return resList;
+        }
+
+        void dfs(int[] nums, boolean[] vis) {
+            if (list.size() == nums.length) {
+                resList.add(new LinkedList(list));
+                return;
+            }
+            HashSet<Integer> set = new HashSet<>();
+
+            for (int i = 0; i < nums.length; i++) {
+                if (!vis[i] && !set.contains(nums[i])) {
+                    vis[i] = true;
+                    set.add(nums[i]);
+                    list.addLast(nums[i]);
+
+                    dfs(nums, vis);
+
+                    vis[i] = false;
+                    list.removeLast();
+                }
+            }
+        }
+
 }
 
 

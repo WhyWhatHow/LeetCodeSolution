@@ -1,4 +1,4 @@
-package leetcode.algorithm;
+package leetcode.algorithm.dfs;
 
 import java.util.HashSet;
 import java.util.LinkedList;
