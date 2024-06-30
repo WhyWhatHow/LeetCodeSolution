@@ -1,0 +1,64 @@
+package leetcode.algorithm.dp;
+
+/**
+ * @program: LeetCodeSolution
+ * @description: #
+ * @author: WhyWhatHow
+ **/
+
+public class Solution_494 {
+
+    public static void main(String[] args) {
+        Solution_494 sol = new Solution_494();
+        System.out.println(sol.findTargetSumWays(new int[]{
+                        1, 1, 1, 1, 1
+                },
+                3
+        ));
+        System.out.println("==================");
+
+    }
+
+    /**
+     * 0-1背包, dp
+     * if f[i][j] means : 前i个元素, sum == j 's num.
+     * f[i][j] = max( f[i-1][j+nums[i]]+1, f[i-1][j-nums[i]] +1 ) // wa
+     * f[i][j] = f[i-1][j+nums[i-1]]  + f[i-1][j-nums[i-1]]   // plus , minis
+     * f[0][0] = 1
+     * j's range? [-sum,sum]
+     * for avoiding Array index error ,  j+nums[i]+sum
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int findTargetSumWays(int[] nums, int target) {
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+        }
+        if (sum < Math.abs(target)) return 0;
+
+        int[][] f = new int[nums.length + 1][sum * 2 + 1];
+        f[0][0 + sum] = 1; // 不选元素, 和为0, 的结果为1
+
+        for (int i = 1; i <= nums.length; i++) {
+            for (int j = 0; j <= 2 * sum; j++) {
+                int plus = j + nums[i - 1];
+                int minis = j - nums[i - 1];
+                if (minis >= 0) {
+                    f[i][j] += f[i - 1][minis];
+                }
+                if (plus <= 2 * sum) {
+                    f[i][j] += f[i - 1][plus];
+                }
+            }
+        }
+
+        return f[nums.length][target + sum];
+
+    }
+
+}
+
+
