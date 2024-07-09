@@ -22,7 +22,7 @@ public class Solution_724 {
      * f[i] means [0,i) sum
      * so f[0] -->[0,0) f[0] = 0
      * f[i] = f[i-1] +nums[i-1]; // [0,i)
-     * index i's left sum : f[i]
+     * index i's left sum : f[ i-1 ]
      * index i's right sum : f[n] -f[i]
      *
      * @param nums
