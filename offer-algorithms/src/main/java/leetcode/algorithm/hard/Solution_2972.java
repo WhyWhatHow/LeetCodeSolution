@@ -26,7 +26,7 @@ public class Solution_2972 {
      * remove (left, n-1)
      * remove (left, n-2)
      *
-     * @param as
+     * @param nums
      * @return
      */
     public long incremovableSubarrayCount(int[] nums) {
@@ -43,7 +43,7 @@ public class Solution_2972 {
                 left--;
             }
 
-                ans += left + 2;
+            ans += left + 2;
         }
 //        while (right > 0 && nums[right] > nums[right - 1]) right--;
 
