@@ -1,6 +1,5 @@
 package leetcode.algorithm.array;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -24,14 +23,9 @@ public class Solution_3011 {
 
     public boolean canSortArray(int[] nums) {
         HashMap<Integer, Integer> map = new HashMap<>();
-        int[] a = new int[nums.length];
         for (int i = 0; i < nums.length; i++) {
             map.put(nums[i], Integer.bitCount(nums[i]));
-            a[i] = nums[i];
         }
-
-        Arrays.sort(a);
-        int idx = -1;
 
         for (int i = 1; i < nums.length; i++) {
             int j = i;
@@ -47,12 +41,13 @@ public class Solution_3011 {
 
         // check num
         boolean res = true;
-        for (int i = 0; i < a.length; i++) {
-            if (a[i] != nums[i]) {
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] < nums[i - 1]) {
                 res = false;
                 break;
             }
         }
+
         return res;
     }
     /**
