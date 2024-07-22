@@ -65,16 +65,19 @@ public class Solution_2101 {
         int[][] g = new int[n][n];
         // init graph
         for (int i = 0; i < bombs.length; i++) {
-            for (int j = 0; j < bombs.length; j++) {
+            for (int j = i + 1; j < bombs.length; j++) {
                 if (check(i, j, bombs)) {
                     g[i][j] = 1;
+                }
+                if (check(j, i, bombs)) {
+                    g[j][i] = 1;
                 }
             }
         }
         int res = 0;
 
         for (int i = 0; i < n; i++) {
-            res = Math.max(res, bfs(i, g) );
+            res = Math.max(res, bfs(i, g));
         }
 
 
