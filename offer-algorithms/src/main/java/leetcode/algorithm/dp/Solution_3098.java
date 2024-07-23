@@ -40,11 +40,14 @@ public class Solution_3098 {
      * @return
      */
     private int dfs(int i, int pre, int k, int minVal, int[] nums) {
-        if (i >= nums.length) {
-            return k == 0 ? minVal : 0;
-        }
+        // no element need to handle
         if (k == 0) {
             return minVal;
+        }
+
+        // check Array's boundary
+        if (i >= nums.length) {
+            return 0 ;
         }
         // don't have enough element.
         if (nums.length - i < k) return 0;
