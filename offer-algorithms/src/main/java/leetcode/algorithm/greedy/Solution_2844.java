@@ -21,6 +21,31 @@ public class Solution_2844 {
     }
 
     /**
+     * 0-> x00, 50, 0.
+     * 5-> 25,55
+     * 1st find 0, 5 ,
+     * @param num
+     * @return
+     */
+    public int minimumOperationsBetter(String num) {
+        char[] cs = num.toCharArray();
+        int n = cs.length;
+        boolean find0 = false, find5 = false;
+        for (int i = cs.length - 1; i >= 0; i--) {
+            char c = cs[i];
+            if (find0 && (c == '0' || c == '5')) {
+                return n - i - 2; // del c's right  elements but remain '0'
+            }
+            if (find5 && (c == '2' || c == '7')) {
+                return n - i - 2; // del c's right elements but remain '5'
+            }
+            if (c == '0') find0 = true;
+            if (c == '5') find5 = true;
+        }
+        return find0 ? n - 1 : n;
+    }
+
+    /**
      * 25,50,75,00
      *
      * @param num
@@ -65,8 +90,8 @@ public class Solution_2844 {
             }
             ans++;
         }
-        if (c == '0' && !yes) ans = i ;
-        if (c == '5' && !yes) ans = i+1;
+        if (c == '0' && !yes) ans = i;
+        if (c == '5' && !yes) ans = i + 1;
         return ans;
     }
 }
