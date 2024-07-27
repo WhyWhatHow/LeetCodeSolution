@@ -17,7 +17,7 @@ public class Solution_3106 {
         System.out.println("==================");
     }
 
-    public String getSmallestString(String s, int k) {
+    public String getSmallestStringByDFS(String s, int k) {
         char[] chars = s.toCharArray();
         char[] cs = new char[chars.length];
         dfs(0, cs, chars, k);
@@ -44,6 +44,27 @@ public class Solution_3106 {
             cs[cur] = chars[cur];
         }
 
+    }
+
+    /**
+     * greedy
+     * @param s
+     * @param k
+     * @return
+     */
+    public String getSmallestString(String s, int k) {
+        char[] cs = s.toCharArray();
+        char c = 'a';
+        for (int i = 0; i < cs.length; i++) {
+            int distance = distance(c, cs[i]);
+            if (distance > k) {
+                cs[i] -= k;
+                break;
+            }
+            k -= distance;
+            cs[i] = 'a';
+        }
+        return String.valueOf(cs);
     }
 
     int distance(char a, char b) {
