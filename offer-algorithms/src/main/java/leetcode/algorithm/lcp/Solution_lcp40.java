@@ -13,14 +13,52 @@ public class Solution_lcp40 {
 
     public static void main(String[] args) {
         Solution_lcp40 sol = new Solution_lcp40();
-        System.out.println(sol.maxmiumScore(new int[]{
-//                        1, 2, 8, 9
-                        3, 1, 6, 9, 2, 4, 9, 2, 3
+        System.out.println(sol.maxmiumScoreByGreedy(new int[]{
+                        1, 2, 8, 9
+//                        3, 1, 6, 9, 2, 4, 9, 2, 3
                 },
-//                3
-                4
+                3
+//                4
         ));
         System.out.println("==================");
+    }
+
+    /**
+     * #greedy
+     *
+     * @param cards
+     * @param cnt
+     * @return
+     */
+    public int maxmiumScoreByGreedy(int[] cards, int cnt) {
+        Arrays.sort(cards);
+        int sum = 0;
+        int minOdd = 0, minEven = 0;
+        for (int i = cards.length - 1; i >= cards.length - cnt; i--) {
+            sum += cards[i];
+            if ((cards[i] & 1) == 0) minEven = cards[i];
+            else minOdd = cards[i];
+        }
+        if ((sum & 1) == 0) return sum;
+
+        int res = 0;
+        // remove minOdd, add maxEven
+        for (int i = cards.length - cnt - 1; i >= 0; i--) {
+            if ((cards[i] & 1) == 0 && minOdd != 0) {// even
+                res = sum - minOdd + cards[i];
+                break;
+            }
+        }
+
+        // remove minEven ,add maxOdd
+        for (int i = cards.length - cnt - 1; i >= 0; i--) {
+            if ((cards[i] & 1) == 1 && minEven != 0) {// odd
+                res = Math.max(res, sum - minEven + cards[i]);
+                break;
+            }
+        }
+
+        return (res & 1) == 0 ? res : 0;
     }
 
     public int maxmiumScore(int[] cards, int cnt) {
@@ -53,9 +91,9 @@ public class Solution_lcp40 {
                 if (oddSum >= evenSum) {
                     oddlist.pop();
                     oddlist.pop();
-                    res+=oddSum;
+                    res += oddSum;
                 } else {
-                    res+=evenSum;
+                    res += evenSum;
                     evenlist.pop();
                     evenlist.pop();
                 }
