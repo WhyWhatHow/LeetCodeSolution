@@ -18,6 +18,11 @@ public class Solution_3128 {
         System.out.println("==================");
     }
 
+    /**
+     * 思路: 枚举所有的直角顶点.  假设每一个grid[i][j]=1为直角所在的顶点, 当前顶点所在的直角三角形数量即(row[i]-1) *(col[j]-1)
+     * @param grid
+     * @return
+     */
     public long numberOfRightTriangles(int[][] grid) {
         int n = grid.length, m = grid[0].length;
         int[] rows = new int[n];
