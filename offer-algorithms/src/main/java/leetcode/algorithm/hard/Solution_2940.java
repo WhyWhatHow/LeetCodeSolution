@@ -6,7 +6,7 @@ import java.util.PriorityQueue;
 
 /**
  * @program: LeetCodeSolution
- * @description: #
+ * @description: #hard , #pq
  * @author: WhyWhatHow
  **/
 
@@ -32,7 +32,7 @@ public class Solution_2940 {
      * make sure a<=b
      * if a==b || heights[a] < heights[b] , ans[i] = b
      * if heights[a]>= heights[b], exists index t(t>b), heights[a]< heights[t]
-     *
+     *so , for every height[i], handle every smaller elements of heights[i]
      * @param heights
      * @param queries
      * @return
