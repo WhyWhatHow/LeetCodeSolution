@@ -35,8 +35,8 @@ public class Solution_3148 {
 
     /**
      * dp[i][j] means [0:i] ,[0:j] ,最小值.
-     * //     * dp[i][j] = min(dp[i-1][j], dp[i][j-1], g[i][j]) // wa , at least jump once, so no g[i][j]
-     *
+     * dp[i][j] = min(dp[i-1][j], dp[i][j-1], g[i][j])
+     * hint: careful update dp[i][j]'s timing
      * @param grid
      * @return
      */
