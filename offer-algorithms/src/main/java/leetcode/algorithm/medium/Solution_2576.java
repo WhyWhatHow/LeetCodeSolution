@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 /**
  * @program: LeetCodeSolution
- * @description: #
+ * @description: #greedy #medium
  * @author: WhyWhatHow
  **/
 
