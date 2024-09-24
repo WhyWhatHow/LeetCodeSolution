@@ -20,13 +20,48 @@ public class Solution_2207 {
     }
 
     /**
+     * x = pattern[0] , y = pattern[1]
+     * cx [0,i) x 出现的次数, cy[0,i) y 出现的次数
+     * 有题意知, x+text, text+y 对应的最大值.
+     * 设 res 为 text 中pattern 出现的次数
+     * if `x+text` 最大 -> cnty+ res
+     * if `text+y` 最大 -> cntx+ res
+     * @param text
+     * @param pattern
+     * @return
+     */
+    public long maximumSubsequenceCount(String text, String pattern) {
+        char[] cs = text.toCharArray();
+        char x = pattern.charAt(0), y = pattern.charAt(1);
+        long cntx = 0, cnty = 0;
+        long res = 0;
+
+        // count text 中 xy pattern 出现的次数.
+        for (int i = 0; i < cs.length; i++) {
+
+            if (cs[i] == y) {
+                res += cntx;
+                cnty++;
+            }
+            if (cs[i] == x) { // [0,i) ,所以需要后处理
+                cntx++;
+            }
+        }
+
+        // x +text -> res+ cntx
+        //text+y -> res+ cnty
+        res += Math.max(cntx, cnty);
+        return res;
+    }
+
+    /**
      * pattern 长度是2, p[0]+text,  text+p[1],算数量,求大值.
      *
      * @param text
      * @param pattern
      * @return
      */
-    public long maximumSubsequenceCount(String text, String pattern) {
+    public long maximumSubsequenceCountStupid(String text, String pattern) {
         StringBuilder sb = new StringBuilder();
         sb.append(pattern.charAt(0));
         sb.append(text);
