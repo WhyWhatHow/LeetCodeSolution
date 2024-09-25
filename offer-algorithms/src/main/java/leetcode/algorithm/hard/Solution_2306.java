@@ -37,53 +37,20 @@ public class Solution_2306 {
         long res = 0;
         // get distinctNames counts
         for (int i = 0; i < sufs.length; i++) {
-
             for (int j = 0; j < sufs.length; j++) {
                 if (i == j) continue;
-                long cntI = 0;
+                long cnt = 0; // sufs[i] and sufs[j] commons suffix's num.
                 for (String suf : sufs[i]) {
-                    if (!sufs[j].contains(suf)) {
-                        cntI++;
-                    }
+                    if (sufs[j].contains(suf)) cnt++;
                 }
-                long commonSize = sufs[i].size() - cntI; // (sufs[i] and sufs[j])'s common suffix number
-                long cntJ = sufs[j].size() - commonSize;
+                long cntI = sufs[i].size() - cnt;
+                long cntJ = sufs[j].size() - cnt;
                 res += cntI * cntJ;
             }
-
         }
         return res;
     }
 
-//    public long distinctNames(String[] ideas) {
-//        HashSet<String> set = new HashSet<>();
-//        long res = 0 ;
-//        int n = ideas.length;
-//        HashMap<String, ArrayList<Character>> map = new HashMap<>(); // suffix, [prefix]
-//        int[] cnt = new int[26]; //
-//        char A = 'a';
-//        for (String idea : ideas) {
-//            set.add(idea);
-//            char c = idea.charAt(0);
-//            cnt[c - A]++;
-//            map.compute(idea.substring(1), (key, v) -> {
-//                if (v == null)
-//                    v = new ArrayList<>();
-//                v.add(c);
-//                return v;
-//            });
-//        }
-//        // wa : coffee, toffee, time : time-coffee ,不可以用. 所以变成了一个建图的过程了.
-//        for (Map.Entry<String, ArrayList<Character>> entry : map.entrySet()) {
-//            ArrayList<Character> list = entry.getValue();
-//            long temp = 0;
-//            for (Character c : list) {
-//                temp += cnt[c - A];
-//            }
-//            res +=ideas.length-temp;
-//        }
-//        return res;
-//    }
 }
 
 
