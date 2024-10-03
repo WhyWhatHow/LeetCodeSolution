@@ -17,16 +17,71 @@ public class Solution_1928 {
         Solution_1928 sol = new Solution_1928();
 
         System.out.println("==================");
-        System.out.println(sol.minCost(30, new int[][]{
+        System.out.println(sol.minCostNow(30, new int[][]{
                 {0, 1, 10},
                 {1, 2, 10},
                 {2, 5, 10},
                 {0, 3, 1},
                 {3, 4, 10},
                 {4, 5, 15},
-
         }, new int[]{5, 1, 2, 20, 20, 3}));
     }
+
+    public int minCostNow(int maxTime, int[][] edges, int[] passingFees) {
+        int n = passingFees.length;
+        int[] cost = new int[n];
+        int[] times = new int[n];
+        Arrays.fill(cost, Integer.MAX_VALUE);
+        Arrays.fill(times, Integer.MAX_VALUE);
+        // init graph 
+        ArrayList<int[]>[] graph = new ArrayList[n];
+        Arrays.setAll(graph, i -> new ArrayList<int[]>());
+        for (int[] edge : edges) {
+            int x = edge[0], y = edge[1], v = edge[2];
+            // min time
+            graph[x].add(new int[]{y, v});
+            graph[y].add(new int[]{x, v});
+        }
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> {
+            if (a[1] != b[1])
+                return a[1] - b[1];
+            else
+                return a[2] - b[2];
+        }); // int[] : {to,usedTime,cost}
+        cost[0] = passingFees[0];
+        times[0] = 0;
+        pq.add(new int[]{0, cost[0], 0});
+        boolean yes = false;
+        while (!pq.isEmpty()) {
+            int[] polled = pq.poll();
+            int cur = polled[0], curCost = polled[1], curTime = polled[2];
+            if (curTime > maxTime) continue;
+            if (cur == n - 1) {
+                yes = true;
+                break;
+            }
+            for (int[] ints : graph[cur]) {
+                int to = ints[0];
+                int nextCost = curCost + passingFees[to];
+                int nextTime = ints[1] + curTime;
+                if (nextTime > maxTime) continue;
+                if (cost[to] > nextCost) {
+//                    vis[to] = true;
+                    cost[to] = nextCost;
+                    times[to] = nextTime;
+                    pq.add(new int[]{to, cost[to], nextTime});
+                }
+                if (nextTime < times[to]) {
+                    times[to] = nextTime;
+//                    cost[to] = nextCost; // don't need to update, because we don't know nextCost greater or not cost[to]
+                    pq.add(new int[]{to, nextCost, nextTime});
+                }
+            }
+        }
+
+        return yes ? cost[n - 1] : -1;
+    }
+
 
     public int minCost(int maxTime, int[][] edges, int[] passingFees) {
         int[] cost = new int[passingFees.length];
