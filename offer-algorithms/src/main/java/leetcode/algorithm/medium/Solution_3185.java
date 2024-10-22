@@ -1,7 +1,5 @@
 package leetcode.algorithm.medium;
 
-import java.util.HashMap;
-
 /**
  * @program: LeetCodeSolution
  * @description: #
@@ -27,15 +25,13 @@ public class Solution_3185 {
      */
     public long countCompleteDayPairs(int[] hours) {
         long res = 0;
-        HashMap<Integer, Integer> map = new HashMap<>();// k =  ,v = count
-        map.put(hours[0] % 24, 1);
+        int[] a = new int[24];
+        a[hours[0]%24]++;
         for (int i = 1; i < hours.length; i++) {
             int mod = hours[i] % 24;
             int key = mod == 0 ? 0 : 24 - mod;
-            if (map.containsKey(key)) {
-                res += map.get(key);
-            }
-            map.compute(mod, (k, v) -> v == null ? 1 : v + 1);
+            res += a[key];
+            a[mod]++;
         }
         return res;
     }
