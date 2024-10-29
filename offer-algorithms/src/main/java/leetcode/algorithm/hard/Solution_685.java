@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * @program: LeetCodeSolution
- * @description: #
+ * @description: #unionFind #hard #graph
  * @author: WhyWhatHow
  **/
 
