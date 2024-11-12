@@ -43,7 +43,7 @@ public class Solution_1547 {
     /**
      * f(i,j) [i,j] minCost.
      * if exist k (k<j && k>l)
-     * f(i,j) = min(f(i,k) + f(k,j) + j-i )
+     * f(i,j) = min(f(i,k) + f(k,j))+ cuts[j]-cuts[i]
      */
     private int dfs(int[] cuts, int l, int r) {
         if (l >= r) return 0;
