@@ -1,4 +1,4 @@
-package leetcode.algorithm.pq;
+package leetcode.algorithm.window;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,9 +56,8 @@ public class Solution_632 {
 
 
     public int[] smallestRange(List<List<Integer>> nums) {
-//        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> {
-//            return a[0] - b[0];
-//        }); // val, x, y
+        // wa : reason : only check a[0] don't check the whole element, so if you try to use Comparator, you need to handle every part of element.
+//        TreeSet<int[]> set = new TreeSet<>((a,b)->{return a[0]-b[0]});//
         TreeSet<int[]> set = new TreeSet<>((a, b) -> {
             if (a[0] != b[0]) return a[0] - b[0];
             else if (a[1] != b[1]) return a[1] - b[1];
@@ -69,15 +68,13 @@ public class Solution_632 {
             Integer val = nums.get(i).get(0);
             min = Math.min(min, val);
             max = Math.max(max, val);
-//            pq.add(new int[]{val, i, 0});
             set.add(new int[]{val, i, 0});
         }
         int minDistance = max - min;
 
         while (!set.isEmpty()) {
             int[] a = set.pollFirst();
-            System.out.println(a[0] + " , x:" + a[1] + " ,y:" + a[2]);
-
+//            System.out.println(a[0] + " , x:" + a[1] + " ,y:" + a[2]);
             int x = a[1], y = a[2] + 1;
             if (y == nums.get(x).size()) break;
             int val = nums.get(x).get(y);
@@ -89,45 +86,12 @@ public class Solution_632 {
                 max = set.last()[0];
                 min = set.first()[0];
             }
-//            if (set.size() < nums.size()) break;
-
 
         }
 
         return new int[]{min, max};
     }
 
-    /**
-     * slide window
-     *
-     * @param nums
-     * @return
-     */
-    public int[] smallestRangeByslideWindow(List<List<Integer>> nums) {
-
-        // init
-        ArrayList<int[]> list = new ArrayList<>(); // int[] val, idx
-        for (int i = 0; i < nums.size(); i++) {
-            List<Integer> tmpList = nums.get(i);
-            for (Integer j : tmpList) {
-                list.add(new int[]{j, i});
-            }
-        }
-        list.sort((a, b) -> {
-            return a[0] - b[0];
-        });
-        int n = nums.size();
-        int[] counts = new int[n];
-        int min = Integer.MIN_VALUE, max = Integer.MAX_VALUE;
-
-        for (int[] ints : list) {
-            int val = ints[0], level = ints[1];
-            counts[level]++;
-
-        }
-
-        return new int[]{min, max};
-    }
 }
 
 
