@@ -16,7 +16,7 @@ public class Solution_3264 {
     }
 
     public int[] getFinalState(int[] nums, int k, int multiplier) {
-        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> {
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> { //int[] {val, idx}
             if (a[0] != b[0]) return a[0] - b[0];
             else return a[1] - b[1];
         });
