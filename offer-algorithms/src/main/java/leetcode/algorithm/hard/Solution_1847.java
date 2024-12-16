@@ -27,9 +27,13 @@ public class Solution_1847 {
     }
 
     /**
-     * minSize: 对应的所有房间id
-     * size -> roomIds
-     * minSize ->
+     * 这道题我的思路是,
+     * 1. 将同 size 的roomid 放在一起, 这里用到的是treemap<size, int[]>
+     * 2. queries 按minsize大小 降序, 需要保存 idx -> nums
+     * 3. 按照minSize 大小  处理结果
+     * 将>=当前size的 int[] 并入另一个treeset 中
+        *  map.subMap(from ,to ) -> [from ,to)
+     * 然后执行查询
      *
      * @param rooms
      * @param queries
