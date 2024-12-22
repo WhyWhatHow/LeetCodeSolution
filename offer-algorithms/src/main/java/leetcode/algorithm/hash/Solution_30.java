@@ -14,7 +14,17 @@ public class Solution_30 {
 
     public static void main(String[] args) {
         // hint
+        HashMap<Integer, Integer> m = new HashMap<>();
+        HashMap<Integer, Integer> mm = new HashMap<>();
+        m.put(1,5000);
+        mm.put(1,5000);
 
+//         answer false
+        System.out.println(m.get(1) == mm.get(1));
+        //  you should use like this
+        System.out.println(m.get(1)-mm.get(1)==0);
+        // or
+        System.out.println(m.get(1).equals(mm.get(1)));
 
 
 
