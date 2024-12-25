@@ -1,4 +1,4 @@
-package leetcode.algorithm.hard;
+package leetcode.algorithm.pq;
 
 import java.util.PriorityQueue;
 
