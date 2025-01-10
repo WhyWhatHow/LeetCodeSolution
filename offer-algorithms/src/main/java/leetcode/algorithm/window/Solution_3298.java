@@ -25,7 +25,7 @@ public class Solution_3298 {
             counts[c - 'a']++;
         }
 
-        int all = 0;
+        int all = 0; // in s, you have to add all's num of char (a-z).
         for (int count : counts) {
             if (count > 0) all++;
         }
