@@ -9,7 +9,7 @@ public class Solution_76 {
      * @param t
      * @return
      */
-    public String minWindow(String s, String t) {
+    public String minWindowOld(String s, String t) {
         if (s == null || s == "" || t == null || t == "" || s.length() < t.length()) {
             return "";
         }
@@ -59,6 +59,8 @@ public class Solution_76 {
     }
 
     public static void main(String[] args) {
+        System.out.println(Integer.valueOf('a'));
+        System.out.println(Integer.valueOf('Z'));
         Solution_76 sol = new Solution_76();
 //        String s = "ADOBECODEBANC";
 //        String t = "ABC";
@@ -68,11 +70,50 @@ public class Solution_76 {
 //        String s="a";
 //        String t="b";
 //        String s1 = sol.minWindow(s, t);
-        String s1 = sol.minwindows(s, t);
-        System.out.println(s1);
+//        String s1 = sol.minwindowsOld(s, t);
+        System.out.println(sol.minWindow(s, t));
+
     }
 
-    public String minwindows(String s, String t) {
+    public String minWindow(String s, String t) {
+        char[] cs = s.toCharArray();
+        char[] ts = t.toCharArray();
+        int[] f = new int[128]; //
+        for (char c : ts) {
+            f[c]++;
+        }
+
+        int all = 0;
+        for (int i : f) {
+            all += i > 0 ? 1 : 0;
+        }
+
+        boolean yes = false;
+        int l = 0;
+        int min = cs.length; //
+        String res = "";
+        for (int r = 0; r < cs.length; r++) {
+            char c = cs[r];
+            f[c]--;
+            if (f[c] == 0) all--;
+
+            while (all == 0) {
+                char cc = cs[l++];
+                if (f[cc] == 0) all++;
+                f[cc ]++;
+                yes = true;
+            }
+            if (yes && min > (r - l + 1)) {
+                min = r - l + 1;
+                res = s.substring(l - 1, r+1);
+            }
+        }
+        return res;
+
+    }
+
+
+    public String minwindowsOld(String s, String t) {
 
         int[] need = new int[128];
         int[] window = new int[128];
@@ -95,7 +136,7 @@ public class Solution_76 {
                     cnt--;
                     int temp = right - left + 1;
                     if (temp < min) {
-                        min =temp;
+                        min = temp;
                         res = s.substring(left, right + 1);
                     }
                 }
