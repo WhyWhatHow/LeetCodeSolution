@@ -46,7 +46,7 @@ public class Solution_3298 {
                     all++;
                 }
             }
-            res += l;
+            res += l; // the key
         }
 
         return res;
