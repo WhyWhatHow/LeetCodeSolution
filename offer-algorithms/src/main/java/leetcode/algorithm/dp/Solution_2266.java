@@ -41,8 +41,7 @@ public class Solution_2266 {
     }
 
     public int countTexts(String pressedKeys) {
-//        init(pressedKeys.length());
-        init(f.length);
+        init(pressedKeys.length());
         char[] cs = pressedKeys.toCharArray();
         int cnt = 0;
         long res = 1;
