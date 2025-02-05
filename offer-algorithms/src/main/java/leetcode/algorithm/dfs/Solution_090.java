@@ -1,4 +1,4 @@
-package leetcode.algorithm.demo;
+package leetcode.algorithm.dfs;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,8 +15,8 @@ public class Solution_090 {
 
     public static void main(String[] args) {
         Solution_090 sol = new Solution_090();
-        List<List<Integer>> lists = sol.subsetsWithDup(new int[]{1, 2, 2});
-
+        List<List<Integer>> lists = sol.subsetsWithDup(new int[]{1, 2, 3});
+        lists.forEach(System.out::println);
         System.out.println("==================");
     }
 
@@ -42,10 +42,9 @@ public class Solution_090 {
             if (i > start && nums[i] == nums[i - 1]) {
                 continue;
             }
-
             list.add(nums[i]);
             dfs(nums, res, list, i + 1);
-            list.pop();
+            list.removeLast();
         }
     }
 }
