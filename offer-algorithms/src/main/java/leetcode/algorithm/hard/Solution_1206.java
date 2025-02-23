@@ -91,7 +91,7 @@ class Skiplist {
 
     // remove first ele's value = num
     public boolean erase(int num) {
-        if (!search(num)) return false;
+        boolean yes =false ;
         SkiplistNode cur = head;
 
         for (int i = cur.next.length - 1; i >= 0; i--) {
@@ -99,10 +99,11 @@ class Skiplist {
             while (cur.next[i] != null && cur.next[i].value < num) cur = cur.next[i];
 
             if (cur.next[i]!=null && cur.next[i].value == num) {
+                yes =true;
                 SkiplistNode tmp = cur.next[i];
                 cur.next[i] =tmp.next[i];
             }
         }
-        return true;
+        return yes;
     }
 }
