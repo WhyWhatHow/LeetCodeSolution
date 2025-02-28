@@ -1,6 +1,5 @@
 package leetcode.algorithm.medium;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
@@ -50,7 +49,8 @@ class Food {
 class FoodRatings {
     // food, i_rating
     HashMap<String, Integer> fmap = new HashMap<>(); // food, idx. 
-    HashMap<String, ArrayList<Integer>> cmap = new HashMap<>();
+    //    HashMap<String, ArrayList<Integer>> cmap = new HashMap<>();
+    HashMap<String, PriorityQueue<Food>> cmap = new HashMap<>();
     String[] foods;
     String[] cuisines;
     int[] ratings;
@@ -65,9 +65,12 @@ class FoodRatings {
             int finalI = i;
             cmap.compute(cuisines[i], (k, v) -> {
                 if (v == null) {
-                    v = new ArrayList<Integer>();
+                    v = new PriorityQueue<>((a, b) -> {
+                        if (a.rating != b.rating) return b.rating - a.rating;
+                        else return a.name.compareTo(b.name);
+                    });
                 }
-                v.add(finalI);
+                v.add(new Food(foods[finalI], ratings[finalI]));
                 return v;
             });
         }
@@ -76,32 +79,22 @@ class FoodRatings {
     public void changeRating(String food, int newRating) {
         Integer i = fmap.get(food);
         ratings[i] = newRating;
+        // add to cmap
+        PriorityQueue<Food> pq = cmap.get(cuisines[i]);
+        pq.add(new Food(foods[i], newRating));
+        cmap.put(cuisines[i], pq);
     }
 
-    PriorityQueue<Food> pq = new PriorityQueue<>((a, b) -> {
-        if (a.rating != b.rating) return b.rating - a.rating;
-        else return a.name.compareTo(b.name);
-    });
 
     public String highestRated(String cuisine) {
-        ArrayList<Integer> list = cmap.get(cuisine);
-//        pq.clear();
-//        for (Integer i : list) {
-//            pq.add(new Food(foods[i], ratings[i]));
-//        }
-//        return pq.peek().name;
-        int maxRating = ratings[list.get(0)];
-        String maxName = foods[list.get(0)];
-        for (int i = 1; i < list.size(); i++) {
-            int idx = list.get(i);
-            if (maxRating < ratings[idx]) {
-                maxRating = ratings[idx];
-                maxName = foods[idx];
-            } else if (maxRating == ratings[idx] && maxName.compareTo(foods[idx]) > 0) {
-                maxName = foods[idx];
-            }
+        PriorityQueue<Food> pq = cmap.get(cuisine);
+        while (!pq.isEmpty()) {
+            String name = pq.peek().name;
+            Integer i = fmap.get(name);
+            if (ratings[i] != pq.peek().rating) pq.poll();// 之前的旧数据,懒删除操作
+            else break;
         }
-        return maxName;
+        return pq.peek().name;
     }
 }
 
