@@ -73,6 +73,7 @@ public class Solution_132 {
         return res;
     }
 
+    // TAG [whywhathow] [2025/3/2] 如何记录string 中回文的下标.
     // 打表, 标记[0,n) 范围内所有的回文.
     private void init(char[] cs) {
         int n = cs.length;
