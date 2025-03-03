@@ -1,4 +1,4 @@
-package leetcode.algorithm.hard;
+package leetcode.algorithm.dp;
 
 import java.util.Arrays;
 
