@@ -46,7 +46,7 @@ public class Solution_1278 {
      * @return
      */
     private int dfs(char[] cs, int i, int k) {
-        if (k == 0) return f[i][k] = 0;
+
         if (i == k - 1) return f[i][k] = 0; // [0,i] 构建 k 个子串.
         if (k == 1) return f[i][k] = minCost[0][i];//
         if (f[i][k] != -1) return f[i][k];
