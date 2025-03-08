@@ -25,12 +25,44 @@ public class Solution_227 {
         System.out.println("==================");
     }
 
-    class Node {
-        char ch;
-        int idx;
+    public int calculate(String s) {
+        Stack<Integer> nums = new Stack<>();
+        char[] cs = s.toCharArray();
+        int num = 0;
+        char preOp = '+'; // 默认第一个操作是+
+        for (int i = 0; i < cs.length; i++) {
+            if (cs[i] == ' ') continue;
+            if (Character.isDigit(cs[i])) {
+                num = 10 * num + cs[i] - '0';
+            } else {
+                doCal(preOp, nums, num);
+                preOp = cs[i];
+                num = 0;
+            }
+        }
+        // handle the last number.
+        doCal(preOp,nums,num);
+        return nums.stream().mapToInt(Integer::intValue).sum();
     }
 
-    public int calculate(String s) {
+    private  void doCal(char preOp, Stack<Integer> nums, int num) {
+        switch (preOp) {
+            case '+':
+                nums.push(num);
+                break;
+            case '-':
+                nums.push(-num);
+                break;
+            case '*':
+                nums.push(num * nums.pop());
+                break;
+            case '/':
+                nums.push(nums.pop() / num);
+                break;
+        }
+    }
+
+    public int calculateStupid(String s) {
         char[] cs = s.toCharArray();
         Stack<Integer> nums = new Stack<>();
         Stack<Character> ss = new Stack<>();
