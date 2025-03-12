@@ -10,6 +10,7 @@ public class Solution_3305 {
 
     public static void main(String[] args) {
         Solution_3305 sol = new Solution_3305();
+        System.out.println("abced".indexOf('c') != -1);
         System.out.println(sol.countOfSubstrings(
 //                "ieaouqqieaouqq"
                 "iqeaouqi"
@@ -68,7 +69,8 @@ public class Solution_3305 {
     }
 
     boolean check(char c) {
-        return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
+        return "aeiou".indexOf(c) != -1;
+//        return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
     }
 }
 
