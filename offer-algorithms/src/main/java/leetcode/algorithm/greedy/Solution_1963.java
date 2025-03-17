@@ -25,27 +25,13 @@ public class Solution_1963 {
             if (cs[l] == '[') c++;
             else if (c > 0) c--;
             else {
-                c = 1;
+                c = 1; // 默认寻找最右侧的[, 如果不交换, 最终结果会是c=ans; 因为多了ans 个[.
                 ans++;
-                while (r >= mid) {
-                    if (cs[r] == '[') {
-                        swap(cs, l, r);
-                        r--;
-                        break;
-                    }
-                    r--;
-                }
             }
-
         }
         return ans;
     }
 
-    private void swap(char[] cs, int l, int r) {
-        char c = cs[l];
-        cs[l] = cs[r];
-        cs[r] = c;
-    }
 }
 
 
