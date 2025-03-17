@@ -22,14 +22,11 @@ public class Solution_1963 {
         int ans = 0;
         int c = 0;// '[' 数量
         for (; l < cs.length; l++) {
-            if (cs[l] == ']') {
-                if (c > 0) {
-                    c--;
-                    continue;
-                }
-                ans++;
+            if (cs[l] == '[') c++;
+            else if (c > 0) c--;
+            else {
                 c = 1;
-
+                ans++;
                 while (r >= mid) {
                     if (cs[r] == '[') {
                         swap(cs, l, r);
@@ -38,7 +35,8 @@ public class Solution_1963 {
                     }
                     r--;
                 }
-            } else c++;
+            }
+
         }
         return ans;
     }
