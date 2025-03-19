@@ -52,7 +52,7 @@ public class Solution_2614 {
         // 2,3, 5, 7
         for (int i = 2; i < vis.length; i++) {
             if (!vis[i]) {
-                for (int j = i * i; j < vis.length; j += i) {
+                for (int j = i + i; j < vis.length; j += i) {
                     vis[j] = true;
                 }
             }
