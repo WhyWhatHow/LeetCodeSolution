@@ -1,6 +1,7 @@
 package leetcode.algorithm.medium;
 
 import java.util.BitSet;
+import java.util.HashSet;
 
 /**
  * @program: LeetCodeSolution
@@ -49,7 +50,7 @@ public class Solution_2711 {
         int[][] res = new int[n][m];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                res[i][j] = (int) Math.abs(ans[i][j].lt.stream().count() - ans[i][j].rb.stream().count());
+                res[i][j] = (int) Math.abs(ans[i][j].lt.size() - ans[i][j].rb.size());
             }
         }
         return res;
@@ -61,8 +62,8 @@ public class Solution_2711 {
         int m = grid[0].length;
         int x = i + 1, y = j + 1;
         while (x < n && y < m) {
-            ans[i][j].rb.set(grid[x][y]);
-            ans[x][y].lt.set(grid[i][j]);
+            ans[i][j].rb.add(grid[x][y]);
+            ans[x][y].lt.add(grid[i][j]);
 
             x++;
             y++;
@@ -71,8 +72,8 @@ public class Solution_2711 {
 
 
     class NPair {
-        BitSet lt = new BitSet();
-        BitSet rb = new BitSet();
+        HashSet lt = new HashSet();
+        HashSet rb = new HashSet();
     }
 }
 
