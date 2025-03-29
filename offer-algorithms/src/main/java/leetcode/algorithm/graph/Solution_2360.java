@@ -19,7 +19,7 @@ public class Solution_2360 {
     public int longestCycle(int[] edges) {
         int res = -1;
         int n = edges.length;
-        boolean[] vis = new boolean[n];
+        // count indegree of node
         int[] ins = new int[n];
         for (int i : edges) {
             if (i != -1) ins[i]++;
@@ -41,6 +41,8 @@ public class Solution_2360 {
             }
         }
 
+
+        boolean[] vis = new boolean[n]; // every node in circle.
         for (int i = 0; i < n; i++) {
             if (ins[i] > 0 && !vis[i]) {
                 // 环上一点, 如何统计呢?
