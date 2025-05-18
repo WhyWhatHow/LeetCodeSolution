@@ -27,6 +27,7 @@ public class Solution_1931 {
     int mod = 1000_000_007;
     int[] p;
     int m;
+    boolean[][] v;
 
     /**
      * 红,绿,蓝, 分别用0,1,2 表示,那么对于第i列 可以的取值范围是3^m(有m行, 所以所有的出现情况是3^m次, 去掉不符合题意的数据后,会少很多)
@@ -42,6 +43,9 @@ public class Solution_1931 {
 
         // 获取符合题意的数据.
         List<Integer> q = genQualifiedNum(m, p);
+
+        // 判断 任意两列 是否可以相邻
+        v = genVis(q);
         int[][] f = new int[n][q.size()]; // f[i][j] 表示前i列, 且第i列的值是q.get(i)的情况下 方案数.
         // f[i][j] = f[i-1][k] , k取值范围(枚举q中的每一个元素)
         for (int i = 1; i < f.length; i++) {
@@ -59,13 +63,27 @@ public class Solution_1931 {
         return (int) (res % mod);
     }
 
+    private boolean[][] genVis(List<Integer> q) {
+        boolean[][] v = new boolean[q.size()][q.size()];
+        for (int i = 0; i < q.size(); i++) {
+            for (int j = i + 1; j < q.size(); j++) {
+                if (check(q.get(i), q.get(j), m)) {
+                    v[i][j] = true;
+                    v[j][i] = true;
+                }
+            }
+        }
+        return v;
+    }
+
     private int dfs(int i, int j, int[][] f, List<Integer> q) {
 //        if (i == 0) return f[i][j];
         if (f[i][j] != -1) return f[i][j];
         int cur = q.get(j);
         int res = 0;
         for (int k = 0; k < q.size(); k++) {
-            if (check(cur, q.get(k), m)) {
+            if (v[j][k]) {
+//            if (check(cur, q.get(k), m)) {
                 res += dfs(i - 1, k, f, q);
                 if (res > mod) res %= mod;
             }
