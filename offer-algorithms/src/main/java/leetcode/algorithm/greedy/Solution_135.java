@@ -1,5 +1,7 @@
 package leetcode.algorithm.greedy;
 
+import java.util.Arrays;
+
 /**
  * @program: LeetCodeSolution
  * @description:
@@ -12,49 +14,41 @@ public class Solution_135 {
         Solution_135 sol = new Solution_135();
         System.out.println(sol.candy(new int[]{
 //                1,0,2
-                1,3,2,2,1
-        }));;
+                29, 51, 87, 87, 72, 12
+//                1,2,2
+//                1, 3, 2, 2, 1
+        }));
+        ;
         System.out.println("==================");
     }
 
-    //    每个孩子至少分配到 1 个糖果
-//    相邻两个孩子评分更高的孩子会获得更多的糖果
     public int candy(int[] ratings) {
+        int n = ratings.length;
+        int[] ls = new int[n];
+        int[] rs = new int[n];
+        Arrays.fill(ls, 1);
+        Arrays.fill(rs, 1);
 
-        int min = 30000;
-        int ans = 0;
-        int start = -1;
-        int[] nums = new int[ratings.length];
-
-        // find start loc
-        for (int i = 0; i < ratings.length; i++) {
-            if (min > ratings[i]) {
-                min = ratings[i];
-                start = i;
-            }
-        }
-
-        nums[start] = 1;
-        //start -> n
-        for (int i = start + 1; i < ratings.length; i++) {
+        // left -> right
+        for (int i = 1; i < ratings.length; i++) {
             if (ratings[i] > ratings[i - 1]) {
-                nums[i] = nums[i - 1] + 1;
-            } else {
-                nums[i] = nums[i - 1] - 1 > 0 ? nums[i - 1] - 1 : 1;
+                ls[i] = ls[i - 1] + 1;
             }
         }
-        // start -> 0
-        for (int i = start - 1; i >= 0; i--) {
+
+        // right-> left
+        for (int i = ratings.length - 2; i >= 0; i--) {
             if (ratings[i] > ratings[i + 1]) {
-                nums[i] = nums[i + 1] + 1;
-            } else {
-                nums[i] = nums[i + 1] - 1 > 0 ? nums[i + 1] - 1 : 1;
+                rs[i] = rs[i + 1] + 1;
             }
         }
-        for (int num : nums) {
-            ans += num;
+
+        int ans = 0 ;
+        for (int i = 0; i < n; i++) {
+            ans += Math.max(ls[i],rs[i]);
         }
-        return ans;
+        return ans ;
+
     }
 
 
