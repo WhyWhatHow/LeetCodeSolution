@@ -24,7 +24,10 @@ public class Solution_3445 {
      * 最终结果是 maxDiff = ss[r][x] -ss[r][y] - (ss[l][x]-ss[l][y]);
      * 设 X[i] = ss[i][x] -ss[i][y] 表示 从[0,i) range 内的差值.
      * wait a minute, 是不是遗漏了什么条件.
-     * x,y 数量的奇偶性没有进行判断.
+     * 1.  范围要求:r-l >=k
+     * 2.x,y 数量的奇偶性没有进行判断.
+     * 子串必须包含正奇数个 x，那么至少要满足 ss[r][x]>ss[l][x]。
+     * 子串必须包含正偶数个 y，那么至少要满足 ss[r][y]>ss[l][y]。
      * 那么 我们就设ms[p][q] 为 [l,r] 范围内, x的数量奇偶性是p, y的数量奇偶性是q的情况下 所对应的最小值.
      * maxDiff = max(maxDiff, ss[i][x]- ss[i][y] -ms[p][q]) ; // 其中p 为x数量对于的奇偶性, q为y数量对应的奇偶性.
      *
