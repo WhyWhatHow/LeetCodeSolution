@@ -15,6 +15,23 @@ public class Solution_3445 {
     }
 
 
+    /**
+     * 设 x为 统计数量为奇数的数, y 为统计数量为偶数的数字, 其他数字统一归零.
+     * 设ss[i][j] 表示[0,i) 范围内 数字j出现的次数.
+     * 不考虑奇偶性:  对于x,y ,在区间[l,r] 范围内出现的数量是
+     * x 在区间 [l,r] 出现的数量 : ss[r][x]-ss[l][x]
+     * y 在区间 [l,r] 出现的数量 : ss[r][y] -ss[l][y]
+     * 最终结果是 maxDiff = ss[r][x] -ss[r][y] - (ss[l][x]-ss[l][y]);
+     * 设 X[i] = ss[i][x] -ss[i][y] 表示 从[0,i) range 内的差值.
+     * wait a minute, 是不是遗漏了什么条件.
+     * x,y 数量的奇偶性没有进行判断.
+     * 那么 我们就设ms[p][q] 为 [l,r] 范围内, x的数量奇偶性是p, y的数量奇偶性是q的情况下 所对应的最小值.
+     * maxDiff = max(maxDiff, ss[i][x]- ss[i][y] -ms[p][q]) ; // 其中p 为x数量对于的奇偶性, q为y数量对应的奇偶性.
+     *
+     * @param s
+     * @param k
+     * @return
+     */
     public int maxDifference(String s, int k) {
         char[] cs = s.toCharArray();
         int INF = Integer.MAX_VALUE / 2;
