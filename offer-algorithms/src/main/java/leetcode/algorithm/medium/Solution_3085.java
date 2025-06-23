@@ -21,7 +21,7 @@ public class Solution_3085 {
     }
 
     /**
-     *
+     * 可以减少最少的数据量 = len(word) - 最多可以保留的数据量
      * @param word
      * @param k
      * @return
