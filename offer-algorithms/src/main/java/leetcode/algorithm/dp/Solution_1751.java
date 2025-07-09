@@ -20,7 +20,7 @@ public class Solution_1751 {
 
     /**
      * 设 f[i][j] 表示[0,i) events 中, 选择了j个事件的最大值.==> f[i][j] 是递增的. 所以可以用二份查找.
-     * 选择第i个会议: f[i][j] = f[i-1][j-1] + events[i];
+     * 选择第i个会议: f[i][j] = f[p][j-1] + events[i];  // 其中p 为[0,i-1) 范围内满足 events[p][1] < events[i][0] 的最大范围, 也就是[0,p] range 内的最大值.
      * 不选第i个会议: f[i][j] = f[i-1][j]
      *
      * @param events
