@@ -29,7 +29,7 @@ public class Solution_3169 {
             if (s <= end) {
                 end = Math.max(end, e);
             } else {
-                if(e<end) continue;
+//                if(e<end) continue;
                 cnt+=s-end-1;
                 end = e;
                 st =s;
