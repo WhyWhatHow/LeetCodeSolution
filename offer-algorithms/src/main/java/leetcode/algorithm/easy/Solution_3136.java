@@ -16,24 +16,22 @@ public class Solution_3136 {
         System.out.println("==================");
     }
 
-    class Solution {
-        public boolean isValid(String word) {
-            char[] cs = word.toLowerCase().toCharArray();
-            boolean y =false , yy =false ;
-            int cnt = 0 ;
-            Set<Character> s = Set.of('a', 'e', 'i', 'o', 'u');
-            Set<Character> ss = Set.of('$', '@', '#');
-            for(char c: cs){
-                if(ss.contains(c)) return false ;
-                if(c>='a' && c<='z'){
-                    if(s.contains(c)) y = true;
-                    else yy =true;
+    public boolean isValid(String word) {
+        char[] cs = word.toLowerCase().toCharArray();
+        boolean y = false, yy = false;
+        int cnt = 0;
+        Set<Character> s = Set.of('a', 'e', 'i', 'o', 'u');
+        Set<Character> ss = Set.of('$', '@', '#');
+        for (char c : cs) {
+            if (ss.contains(c)) return false;
+            if (c >= 'a' && c <= 'z') {
+                if (s.contains(c)) y = true;
+                else yy = true;
 
-                }
-                cnt++ ;
             }
-            return y && yy && cnt>=3;
+            cnt++;
         }
+        return y && yy && cnt >= 3;
     }
 }
 
