@@ -68,11 +68,12 @@ public class Solution_3440 {
                 res = Math.max(res, leftFreeTime + rightFreeTime + costTime);
             } else { // we can move eventI to left , or right freeTime, and maxFreeTime win.
                 int rightEndTime = i == n - 1 ? eventTime : startTime[i + 1];
+//                int leftEndTime = i == 0 ? startTime[0] : endTime[i - 1];
                 int leftStartTime = i == 0 ? 0 : endTime[i - 1];
                 // if we can  move left , no difference .
-                int moveLeft = leftStartTime == 0 ? -1 : rightEndTime - (leftStartTime + costTime);
-                int moveRight = (rightEndTime - costTime) - leftStartTime;
-                res = Math.max(res, Math.max(moveLeft, moveRight));
+//                int moveLeft = leftStartTime == 0 ? -1 : rightEndTime - (leftStartTime + costTime);
+//                int moveRight = (rightEndTime - costTime) - leftStartTime;
+                res = Math.max(res, rightEndTime - leftStartTime - costTime);
             }
         }
         return res;
