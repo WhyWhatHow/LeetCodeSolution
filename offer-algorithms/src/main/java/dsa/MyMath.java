@@ -22,7 +22,6 @@ public class MyMath {
         }
         while (n > 0) {
             if ((n & 1) != 0) { // 判断是否是奇数
-
                 res *=x ;
             }
             x*=x;
@@ -44,8 +43,7 @@ public class MyMath {
         }
         long ans = 1, base = a;
         while (n != 0) {
-            if ((n & 1) == 1) {
-                // odd
+            if ((n & 1) == 1) {// odd
                 ans *= base;
             }
             n >>= 1;
@@ -73,4 +71,12 @@ public class MyMath {
         }
     }
 
+
+
+
+    // 返回 第i位对应的bit值.(从右往左数)
+    // example: 11,-> 1011.   num=11,i=4,-> 1
+    private static int getBitAt(int num, int i) {
+        return (num >> i) & 1;
+    }
 }
