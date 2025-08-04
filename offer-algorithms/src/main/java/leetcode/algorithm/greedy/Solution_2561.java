@@ -1,6 +1,9 @@
 package leetcode.algorithm.greedy;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @program: LeetCodeSolution
@@ -66,20 +69,6 @@ public class Solution_2561 {
 
     }
 
-
-    private void fillPQ(int[] a, int[] b, PriorityQueue<Integer> minpq, PriorityQueue<Integer> maxpq) {
-
-
-    }
-
-    // 判断nums 之和 是否是 奇数, 如果是奇数 true
-    private boolean checkSum(int[] nums) {
-        long sum = 0;
-        for (int num : nums) {
-            sum += num;
-        }
-        return (sum & 1) == 1;
-    }
 }
 
 
