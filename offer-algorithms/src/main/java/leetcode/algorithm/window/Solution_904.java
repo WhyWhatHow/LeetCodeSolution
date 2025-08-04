@@ -29,7 +29,6 @@ public class Solution_904 {
         while (r <= n) {
             if (cnt > 2) {
                 res = Math.max(res, r - 1 - l);
-                int tmp = f[l];
                 while (l <= r && cnt > 2) {
                     int val = map.compute(f[l], (k, v) -> v - 1);
                     if (val == 0) cnt--;
