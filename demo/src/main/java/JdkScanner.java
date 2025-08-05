@@ -1,105 +1,120 @@
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.EnumSet;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
- * JdkScanner 类用于扫描指定路径下的所有JDK安装。
- * 这个版本使用了 Files.walkFileTree 和自定义的 FileVisitor，
- * 以便能优雅地处理 "Access Denied" 异常，避免程序崩溃。
+ * JdkScannerV2 采用混合策略高效扫描JDK。
+ * 1. 优先扫描高可能性目录。
+ * 2. 普查 C:\ 时主动跳过已知的、大型的、无关的系统目录。
  */
 public class JdkScanner {
 
+    // 使用线程安全的 Set 来存储找到的 JDK 路径，防止重复添加。
+    private static final Set<Path> foundJdks = new HashSet<>();
+
     public static void main(String[] args) {
-        // 1. 设置起始路径和最大扫描深度
-        final Path startDir = Paths.get("C:\\");
-        final int maxDepth = 5;
-        final Set<Path> foundJdks = new HashSet<>();
-
-        System.out.println("开始扫描 C:\\ 盘寻找 JDKs，最大深度为 " + maxDepth + "...");
-        System.out.println("注意：此过程可能需要几分钟，具体取决于您的磁盘性能和文件数量。");
-        System.out.println("----------------------------------------------------------");
-
+        System.out.println("开始使用优化策略扫描 JDK...");
         long startTime = System.currentTimeMillis();
 
-        // 2. 创建自定义的 FileVisitor 实例
-        JdkFileVisitor visitor = new JdkFileVisitor(foundJdks);
-
-        // 为了让 walkFileTree 遵循符号链接（比如 C:\Documents and Settings），我们添加一个选项。
-        EnumSet<FileVisitOption> options = EnumSet.of(FileVisitOption.FOLLOW_LINKS);
-
-        try {
-            // 3. 使用 walkFileTree 开始遍历，它比 Files.walk() 更能容忍错误
-            Files.walkFileTree(startDir, options, maxDepth, visitor);
-        } catch (IOException e) {
-            // walkFileTree 本身也可能在启动时就失败，虽然概率较小
-            System.err.println("启动文件遍历时发生致命错误: " + e.getMessage());
+        // --- 阶段1: 扫描高可能性目录 ---
+        System.out.println("\n[阶段 1/2] 正在扫描高可能性目录...");
+        List<Path> highProbabilityPaths = getHighProbabilityPaths();
+        for (Path path : highProbabilityPaths) {
+            if (Files.exists(path)) {
+                System.out.println(" -> 扫描: " + path);
+                scanDirectory(path, 5, null); // 不设置排除项
+            }
         }
+
+        // --- 阶段2: 普查 C:\ 根目录，并排除已知目录 ---
+        System.out.println("\n[阶段 2/2] 正在普查 C:\\ 根目录 (排除系统和已扫描目录)...");
+        Set<String> rootExclusions = new HashSet<>(Arrays.asList(
+                "Program Files", "Program Files (x86)", "Users", "Windows",
+                "ProgramData", "$Recycle.Bin", "System Volume Information", "Recovery"
+        ));
+        scanDirectory(Paths.get("C:\\"), 5, rootExclusions);
 
         long endTime = System.currentTimeMillis();
 
-        // 4. 打印结果
+        // --- 打印结果 ---
         System.out.println("\n----------------------------------------------------------");
         if (foundJdks.isEmpty()) {
             System.out.println("扫描完成，未找到任何 JDK。");
         } else {
             System.out.println("扫描完成！共找到 " + foundJdks.size() + " 个 JDK：");
-            // 为了美观，对结果进行排序后输出
             foundJdks.stream().sorted().forEach(System.out::println);
         }
         System.out.println("总耗时: " + (endTime - startTime) / 1000.0 + " 秒。");
     }
-}
 
-/**
- * 自定义的 FileVisitor，用于在遍历文件树时寻找 JDK。
- */
-class JdkFileVisitor extends SimpleFileVisitor<Path> {
-
-    private final Set<Path> foundJdks;
-
-    public JdkFileVisitor(Set<Path> foundJdks) {
-        this.foundJdks = foundJdks;
+    /**
+     * 获取常见 JDK 安装位置的列表。
+     */
+    private static List<Path> getHighProbabilityPaths() {
+        String userHome = System.getProperty("user.home");
+        return Arrays.asList(
+                Paths.get("C:\\Program Files\\Java"),
+                Paths.get("C:\\Program Files"),
+                Paths.get("C:\\Program Files (x86)"),
+                Paths.get("C:\\tools"),
+                Paths.get(userHome)
+        ).stream().distinct().collect(Collectors.toList());
     }
 
     /**
-     * 在访问一个目录之前被调用。
-     * 我们在这里检查这个目录是否是 JDK 的根目录。
+     * 执行扫描的核心方法
+     * @param startDir 起始目录
+     * @param maxDepth 最大深度
+     * @param exclusions 在起始目录的第一层需要排除的文件夹名称, null 则不排除
      */
-    @Override
-    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
-        // 检查 "bin/javac.exe" 是否存在
-        Path javacPath = dir.resolve("bin").resolve("javac.exe");
+    private static void scanDirectory(Path startDir, int maxDepth, Set<String> exclusions) {
+        try {
+            Files.walkFileTree(startDir, new HashSet<>(), maxDepth, new JdkFileVisitor(startDir, exclusions));
+        } catch (IOException e) {
+            System.err.println("扫描目录 " + startDir + " 时出错: " + e.getMessage());
+        }
+    }
 
-        if (Files.isRegularFile(javacPath)) {
-            // 找到了一个 JDK！
-            foundJdks.add(dir.normalize());
+    /**
+     * 自定义的 FileVisitor，用于寻找 JDK 并实现排除逻辑。
+     */
+    static class JdkFileVisitor extends SimpleFileVisitor<Path> {
+        private final Path scanRoot;
+        private final Set<String> exclusions;
 
-            // 优化：既然已经确认这是一个JDK目录，就没有必要再深入扫描它的子目录了。
-            // 跳过此目录的子树可以提高效率。
+        public JdkFileVisitor(Path scanRoot, Set<String> exclusions) {
+            this.scanRoot = scanRoot;
+            this.exclusions = exclusions;
+        }
+
+        @Override
+        public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
+            // **排除逻辑**：仅当目录是扫描根目录的直接子目录时，才应用排除规则
+            if (exclusions != null && dir.getParent() != null && dir.getParent().equals(scanRoot)) {
+                if (exclusions.contains(dir.getFileName().toString())) {
+                    // System.out.println("  (跳过 " + dir + ")"); // 用于调试
+                    return FileVisitResult.SKIP_SUBTREE; // 跳过此目录及其所有子目录
+                }
+            }
+
+            // **JDK 检查逻辑**
+            if (Files.isRegularFile(dir.resolve("bin").resolve("javac.exe"))) {
+                foundJdks.add(dir.toAbsolutePath().normalize());
+                return FileVisitResult.SKIP_SUBTREE; // 优化：找到后不再深入
+            }
+
+            return FileVisitResult.CONTINUE;
+        }
+
+        @Override
+        public FileVisitResult visitFileFailed(Path file, IOException exc) {
+            // 优雅地跳过无法访问的文件/目录
             return FileVisitResult.SKIP_SUBTREE;
         }
-
-        // 继续遍历
-        return FileVisitResult.CONTINUE;
-    }
-
-    /**
-     * 当访问文件或目录失败时被调用。这是处理 AccessDeniedException 的关键。
-     */
-    @Override
-    public FileVisitResult visitFileFailed(Path file, IOException exc) {
-        if (exc instanceof AccessDeniedException) {
-            // 如果是访问被拒绝，打印一条警告信息，然后跳过这个目录/文件。
-            // System.err.println("跳过无法访问的路径: " + file + " (" + exc.getMessage() + ")");
-            return FileVisitResult.SKIP_SUBTREE; // 跳过这个目录和它的所有子目录
-        }
-
-        // 对于其他类型的IO异常，我们打印错误并继续
-        System.err.println("访问时发生错误: " + file + " [" + exc + "]");
-        return FileVisitResult.CONTINUE;
     }
 }
-
