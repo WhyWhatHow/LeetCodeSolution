@@ -3,45 +3,75 @@ import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
- * JdkScannerV2 采用混合策略高效扫描JDK。
- * 1. 优先扫描高可能性目录。
- * 2. 普查 C:\ 时主动跳过已知的、大型的、无关的系统目录。
+ * JdkScannerV3 使用多线程并发模型，以达到最快的扫描速度。
+ * 它将 C:\ 下的每个子目录作为一个独立任务，交给线程池并发处理。
  */
 public class JdkScanner {
 
-    // 使用线程安全的 Set 来存储找到的 JDK 路径，防止重复添加。
-    private static final Set<Path> foundJdks = new HashSet<>();
+    // 必须使用线程安全的 Set 来收集结果
+    private static final Set<Path> foundJdks = ConcurrentHashMap.newKeySet();
+    private static final int MAX_DEPTH = 5;
 
     public static void main(String[] args) {
-        System.out.println("开始使用优化策略扫描 JDK...");
+        System.out.println("开始使用终极优化策略 (多线程并发扫描)...");
         long startTime = System.currentTimeMillis();
 
-        // --- 阶段1: 扫描高可能性目录 ---
-        System.out.println("\n[阶段 1/2] 正在扫描高可能性目录...");
-        List<Path> highProbabilityPaths = getHighProbabilityPaths();
-        for (Path path : highProbabilityPaths) {
-            if (Files.exists(path)) {
-                System.out.println(" -> 扫描: " + path);
-                scanDirectory(path, 5, null); // 不设置排除项
+        // 定义需要从根目录直接排除的文件夹
+        final Set<String> rootExclusions = new HashSet<>(Arrays.asList(
+                "Windows", "ProgramData", "$Recycle.Bin", "System Volume Information",
+                "Recovery", "PerfLogs", "Documents and Settings"
+        ));
+
+        Path root = Paths.get("C:\\");
+
+        // 创建一个固定大小的线程池，大小通常设为CPU核心数，以实现计算和I/O的最佳平衡
+        int poolSize = Runtime.getRuntime().availableProcessors();
+        System.out.println("初始化线程池，大小为: " + poolSize);
+        ExecutorService executor = Executors.newFixedThreadPool(poolSize);
+
+        // 获取 C:\ 根目录下的所有子目录
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(root)) {
+            for (Path subDir : stream) {
+                if (Files.isDirectory(subDir)) {
+                    // 如果目录不在排除列表中，则为其创建一个扫描任务并提交到线程池
+                    if (!rootExclusions.contains(subDir.getFileName().toString())) {
+                        System.out.println("  -> 已分配扫描任务: " + subDir);
+                        Runnable task = () -> scanDirectory(subDir);
+                        executor.submit(task);
+                    } else {
+                        System.out.println("  -> 已跳过 (根据排除列表): " + subDir);
+                    }
+                }
             }
+        } catch (IOException e) {
+            System.err.println("错误：无法列出 C:\\ 的目录。请检查权限。 " + e.getMessage());
         }
 
-        // --- 阶段2: 普查 C:\ 根目录，并排除已知目录 ---
-        System.out.println("\n[阶段 2/2] 正在普查 C:\\ 根目录 (排除系统和已扫描目录)...");
-        Set<String> rootExclusions = new HashSet<>(Arrays.asList(
-                "Program Files", "Program Files (x86)", "Users", "Windows",
-                "ProgramData", "$Recycle.Bin", "System Volume Information", "Recovery"
-        ));
-        scanDirectory(Paths.get("C:\\"), 5, rootExclusions);
+        // 关闭线程池并等待所有任务完成
+        // 这是确保主线程在所有扫描都结束后再继续执行的关键步骤
+        executor.shutdown();
+        try {
+            // 等待最多10分钟，以防某些目录扫描时间过长
+            if (!executor.awaitTermination(10, TimeUnit.MINUTES)) {
+                System.err.println("扫描超时，部分目录可能未完成。");
+                executor.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            System.err.println("扫描过程被中断。");
+            executor.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
 
         long endTime = System.currentTimeMillis();
 
-        // --- 打印结果 ---
+        // 打印最终结果
         System.out.println("\n----------------------------------------------------------");
         if (foundJdks.isEmpty()) {
             System.out.println("扫描完成，未找到任何 JDK。");
@@ -53,67 +83,35 @@ public class JdkScanner {
     }
 
     /**
-     * 获取常见 JDK 安装位置的列表。
+     * 在单个线程中扫描指定的目录树。
+     * @param startDir 要扫描的起始目录。
      */
-    private static List<Path> getHighProbabilityPaths() {
-        String userHome = System.getProperty("user.home");
-        return Arrays.asList(
-                Paths.get("C:\\Program Files\\Java"),
-                Paths.get("C:\\Program Files"),
-                Paths.get("C:\\Program Files (x86)"),
-                Paths.get("C:\\tools"),
-                Paths.get(userHome)
-        ).stream().distinct().collect(Collectors.toList());
-    }
-
-    /**
-     * 执行扫描的核心方法
-     * @param startDir 起始目录
-     * @param maxDepth 最大深度
-     * @param exclusions 在起始目录的第一层需要排除的文件夹名称, null 则不排除
-     */
-    private static void scanDirectory(Path startDir, int maxDepth, Set<String> exclusions) {
+    private static void scanDirectory(Path startDir) {
         try {
-            Files.walkFileTree(startDir, new HashSet<>(), maxDepth, new JdkFileVisitor(startDir, exclusions));
+            Files.walkFileTree(startDir, new HashSet<>(), MAX_DEPTH, new JdkFileVisitor());
         } catch (IOException e) {
-            System.err.println("扫描目录 " + startDir + " 时出错: " + e.getMessage());
+            // 在并发环境中，单个子任务的失败不应影响其他任务
+            // System.err.println("扫描 " + startDir + " 时出错: " + e.getMessage());
         }
     }
 
     /**
-     * 自定义的 FileVisitor，用于寻找 JDK 并实现排除逻辑。
+     * FileVisitor 的实现保持不变，它本身是独立的。
+     * 它负责检查JDK，并将结果添加到线程安全的 Set 中。
      */
     static class JdkFileVisitor extends SimpleFileVisitor<Path> {
-        private final Path scanRoot;
-        private final Set<String> exclusions;
-
-        public JdkFileVisitor(Path scanRoot, Set<String> exclusions) {
-            this.scanRoot = scanRoot;
-            this.exclusions = exclusions;
-        }
-
         @Override
         public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
-            // **排除逻辑**：仅当目录是扫描根目录的直接子目录时，才应用排除规则
-            if (exclusions != null && dir.getParent() != null && dir.getParent().equals(scanRoot)) {
-                if (exclusions.contains(dir.getFileName().toString())) {
-                    // System.out.println("  (跳过 " + dir + ")"); // 用于调试
-                    return FileVisitResult.SKIP_SUBTREE; // 跳过此目录及其所有子目录
-                }
-            }
-
-            // **JDK 检查逻辑**
             if (Files.isRegularFile(dir.resolve("bin").resolve("javac.exe"))) {
                 foundJdks.add(dir.toAbsolutePath().normalize());
-                return FileVisitResult.SKIP_SUBTREE; // 优化：找到后不再深入
+                return FileVisitResult.SKIP_SUBTREE;
             }
-
             return FileVisitResult.CONTINUE;
         }
 
         @Override
         public FileVisitResult visitFileFailed(Path file, IOException exc) {
-            // 优雅地跳过无法访问的文件/目录
+            // 优雅地跳过无法访问的目录，这是保证并发任务顺利执行的关键
             return FileVisitResult.SKIP_SUBTREE;
         }
     }
