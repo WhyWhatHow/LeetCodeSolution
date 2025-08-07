@@ -44,7 +44,6 @@ public class Solution_3363 {
                     f[i][j] = Math.max(f[i][j], f[i - 1][j + 1]);
                 f[i][j] += fs[i][j];// 当前节点的果实价值
             }
-            y--;
         }
 
         // (n-1, 0 ) -> (
@@ -57,7 +56,6 @@ public class Solution_3363 {
                     f[i][j] = Math.max(f[i][j], f[i + 1][j - 1]);
                 f[i][j] += fs[i][j];
             }
-
         }
         return f[n - 1][n - 1] + f[n - 1][n - 2] + f[n - 2][n - 1];
     }
