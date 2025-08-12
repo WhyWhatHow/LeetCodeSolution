@@ -1,7 +1,6 @@
 package leetcode.algorithm.dp;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * @program: LeetCodeSolution
@@ -25,8 +24,8 @@ public class Solution_2787 {
      * 设f[i][j] 表示[0,i) 范围内 和为j 的方案数.
      * 注: i 对应的是 数字范围是 a^x<=n,  其val = a^x 的数量.
      * f[i][j] = f[i-1][j]  //不选则a[i-1] 数字
-     *              +
-     *           f[i-1][j-val] // a[i-1] =val , 选择a[i-1] 数字之和.
+     * +
+     * f[i-1][j-val] // a[i-1] =val , 选择a[i-1] 数字之和.
      *
      * @param n
      * @param x
@@ -42,11 +41,21 @@ public class Solution_2787 {
         }
 
         int[][] f = new int[list.size() + 1][n + 1]; // f[i][j] means [0,i) range sum=j, the number of ways.
-        for (int i = 0; i < f.length; i++) {
-            Arrays.fill(f[i], -1);
-        }
+//        for (int i = 0; i < f.length; i++) {
+//            Arrays.fill(f[i], -1);
+//        }
         f[0][0] = 1;
-        return dfs(f, list, list.size(), n);
+        for (int i = 1; i <= list.size(); i++) {
+            int val = list.get(i - 1);
+            for (int j = 0; j <= n; j++) {
+                f[i][j] = f[i - 1][j];
+                if (j >= val) {
+                    f[i][j] += f[i - 1][j - val] % mod;
+                }
+            }
+        }
+        return f[list.size()][n] % mod;
+//        return dfs(f, list, list.size(), n);
 
 
     }
