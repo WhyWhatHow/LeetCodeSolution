@@ -15,7 +15,7 @@ public class Solution_1317 {
     }
 
     public int[] getNoZeroIntegers(int n) {
-        for(int i = 1; i< n/2; i++){
+        for(int i = 1; i<=n/2; i++){
             if(check(i) && check(n-i)){
                 return new int[]{i, n-i};
             }
