@@ -10,7 +10,10 @@ public class Solution_2327 {
 
     public static void main(String[] args) {
         Solution_2327 sol = new Solution_2327();
-        System.out.println(sol.peopleAwareOfSecret(6, 2, 4));
+        System.out.println(sol.peopleAwareOfSecret(
+//                684, 18, 496
+                6, 2, 4
+        ));
         System.out.println("==================");
     }
 
@@ -26,11 +29,13 @@ public class Solution_2327 {
         // f[i] = f[i-1] + f[i-delay] - f[i-forget]
         f[1] = 1;
         for (int i = 2; i <= n; i++) {
-            f[i] = f[i - 1];
-            if (i >= delay) f[i] = (f[i] + f[i - delay]) % mod;
-            if (i >= forget) f[i] = (f[i] - f[i - forget]) % mod;
+            long val = f[i - 1];
+//            long val = 0 ;
+            val += i < delay ? 0 : f[i - delay];
+            val -= i < forget ? 0 : f[i - forget];
+            f[i] = (int) ((val) % mod);
         }
-        return (f[n] - f[n - forget]) % mod;
+        return (f[n] - f[n - forget]+mod) % mod;
     }
 
 }
