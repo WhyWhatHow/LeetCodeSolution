@@ -21,6 +21,13 @@ public class Solution_2197 {
         System.out.println("==================");
     }
 
+    /***
+     * gcd(x,y) 求 x,y 的最大公约数 . lcm(x,y) 求最小公倍数
+     * lcm(x,y ) =x*y /gcd(x,y)
+     * gcd(x,y) = gcd(y,x%y) x>y && y!=0;  if y ==0 ,return x;
+     * @param nums
+     * @return
+     */
     public List<Integer> replaceNonCoprimes(int[] nums) {
         var q = new ArrayList<Integer>();
         q.add(nums[0]);
