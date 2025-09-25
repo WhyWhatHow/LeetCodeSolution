@@ -14,7 +14,9 @@ public class Solution_120 {
 
     public static void main(String[] args) {
         Solution_120 sol = new Solution_120();
-        System.out.println(sol.minimumTotalByPQ(List.of(
+//        System.out.println(sol.minimumTotalByPQ(List.of(
+
+        System.out.println(sol.minimumTotal(List.of(
                 //                List.of(-10)
                 ////////////////////////
 //                List.of(2), List.of(3, 4), List.of(6, 5, 7), List.of(4, 1, 8, 3)
@@ -23,7 +25,27 @@ public class Solution_120 {
         System.out.println("==================");
     }
 
+    //f[i][j] means (0,0)->(i,j) range minVal
+    // f[i][j]  = min(f[i-1][j], f[i-1][j-1])+g[i][j];
+    public int minimumTotal(List<List<Integer>> lists) {
+        int n = lists.size();
+        int[][] f = new int[n][n];
+        for (int i = 0; i < f.length; i++) {
+            Arrays.fill(f[i], Integer.MAX_VALUE);
+        }
+        f[0][0] = lists.get(0).get(0);
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j <= i; j++) {
+                f[i][j] = Math.min(f[i - 1][j], j == 0 ? Integer.MAX_VALUE : f[i - 1][j - 1]) + lists.get(i).get(j);
+            }
+        }
 
+        int res = Integer.MAX_VALUE;
+        for (int i : f[n - 1]) {
+            res = Math.min(i, res);
+        }
+        return res;
+    }
 
 
     int[] dir = new int[]{0, 1};
@@ -54,7 +76,7 @@ public class Solution_120 {
                 int sum = val + triangle.get(xx).get(yy);
                 if (m[xx][yy] > sum) {
                     m[xx][yy] = sum;
-                    pq.add(new int[]{xx, yy,sum});
+                    pq.add(new int[]{xx, yy, sum});
                 }
             }
         }
