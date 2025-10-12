@@ -1,4 +1,4 @@
-package leetcode.algorithm.medium;
+package leetcode.algorithm.dp;
 
 import java.util.HashMap;
 import java.util.TreeMap;
