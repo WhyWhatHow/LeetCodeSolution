@@ -20,11 +20,40 @@ public class Solution_3186 {
     }
 
     TreeMap<Integer, Integer> cmap = new TreeMap<>(); // key : power[i], val: cnt
+
+    public long maximumTotalDamage(int[] power) {
+
+        // init
+        for (int i : power) {
+            cmap.compute(i, (k, v) -> v == null ? 1 : v + 1);
+        }
+        Integer[] a = new Integer[cmap.size()];
+        cmap.keySet().toArray(a);
+
+        //set  f[i+1] means a[0]->a[i] range maxTotalDamage;
+        // f[i] means [0,i-1] range maxTotalDamage ;
+        // for a[i]
+        // if we use : f[j]+a[i]*cmap.get(a[i])
+        // if we don't use a[i] : f[i]
+        // f[i+1] = max(f[i] , f[j]+a[i]*cmap.get(a[i])) // a[j] <a[i]-2;
+        long[] f = new long[a.length + 1];
+        int j = 0;
+        for (int i = 0; i < a.length; i++) {
+            while (a[j] < a[i] - 2) j++; //
+
+            f[i + 1] = Math.max(f[i], j >= 0 ? f[j] + (long) a[i] * cmap.get(a[i]) : 0);
+        }
+        return f[a.length];
+
+    }
+
+
+    //    TreeMap<Integer, Integer> cmap = new TreeMap<>(); // key : power[i], val: cnt
     HashMap<Integer, Long> map = new HashMap<>(); //
 
     // set f[i] means [0,i] range , maxValue.
     // f[i] = max(f[i-1], f[j]+c[i]*c[i].cnt)
-    public long maximumTotalDamage(int[] power) {
+    public long maximumTotalDamageByDfs(int[] power) {
         // init
         for (int i : power) {
             cmap.compute(i, (k, v) -> v == null ? 1 : v + 1);
