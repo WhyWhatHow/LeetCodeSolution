@@ -22,6 +22,25 @@ public class Solution_3350 {
     }
 
     public int maxIncreasingSubarrays(List<Integer> nums) {
+        int cnt = 1;
+        int max = 0;
+        int prev = 0;
+        for (int i = 1; i < nums.size(); i++) {
+            if (nums.get(i) > nums.get(i - 1)) {
+                cnt++;
+            } else {
+                max = Math.max(max, cnt / 2);
+                max = Math.max(max, Math.min(prev, cnt));
+                prev = cnt;
+                cnt = 1;
+            }
+        }
+        max = Math.max(max, cnt / 2);
+        max = Math.max(max, Math.min(prev, cnt));
+        return max;
+    }
+
+    public int maxIncreasingSubarraysSlow(List<Integer> nums) {
         int n = nums.size();
         int[] f = new int[n]; // f[i] means[ f[i], i] range 递增.
         for (int i = 1; i < nums.size(); i++) {
