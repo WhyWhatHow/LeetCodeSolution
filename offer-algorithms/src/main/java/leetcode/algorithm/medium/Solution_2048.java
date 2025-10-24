@@ -18,6 +18,35 @@ public class Solution_2048 {
     }
 
     public int nextBeautifulNumber(int n) {
+        for (int i = n + 1; ; i++) {
+            int[] a = new int[10]; // count every number occur time.
+            boolean yes = true;
+            for (int y = i; y>0; y /= 10) {
+                int v = y % 10;
+                a[y % 10]++;
+                if ( v == 7 || v == 8 || v == 9) {
+                    yes = false;
+                    break;
+                }
+            }
+
+            // check x is qualified or not
+            if (yes) {
+                for (int y = i;y>0 ; y /= 10) {
+                    int v = y % 10;
+                    if (a[v] != v) {
+                        yes = false;
+                        break;
+                    }
+                }
+            }
+
+            if (yes) return i;
+        }
+
+    }
+
+    public int nextBeautifulNumberByCnts(int n) {
 
         int res = n + 1;
         while (!check(res)) {
@@ -26,7 +55,6 @@ public class Solution_2048 {
         return res;
 
     }
-
 
 
     char zero = '0';
