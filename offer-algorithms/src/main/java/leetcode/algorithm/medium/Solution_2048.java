@@ -27,29 +27,24 @@ public class Solution_2048 {
 
     }
 
-    int[] cnts = new int[10];
 
-    void init() {
-        for (int i = 0; i < cnts.length; i++) {
-            cnts[i] = i;
-        }
-    }
 
     char zero = '0';
 
     private boolean check(int n) { // 判断number 是否符合题意.
-        init();
-        char[] cs = String.valueOf(n).toCharArray();
-        int len = cs.length;
-        int max = 0;
-        for (int i = 0; i < cs.length; i++) {
-            if (cs[i] == zero) return false; // no zero
-            int v = cs[i] - zero;
-            max = Math.max(v, max);
-            cnts[v]--;
-            if (cnts[v] < 0 || cnts[v]> (cs.length - i)) return false;
+
+        int[] cnts = new int[10];
+        String s = String.valueOf(n);
+        if (s.contains("0")) return false;
+
+        char[] cs = s.toCharArray();
+
+        for (char c : cs) {
+            cnts[c - zero]++;
+            if (cnts[c - zero] > (c - zero)) return false;
         }
-        for (int i = 0; i <= max; i++) {
+
+        for (int i = 0; i < 10; i++) {
             if (cnts[i] == i || cnts[i] == 0) continue;
             else return false;
 //            if (cnts[i] != 0) return false;
