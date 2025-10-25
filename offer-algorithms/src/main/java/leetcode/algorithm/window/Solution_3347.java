@@ -16,10 +16,12 @@ public class Solution_3347 {
         Solution_3347 sol = new Solution_3347();
         System.out.println(sol.maxFrequency(new int[]{
 //                1, 4, 5
-                        88, 53
+//                        88, 53
+                        25,75,49
                 },
 //                1, 2
-                27, 2
+//                27, 2
+                13,1
         ));
         System.out.println("==================");
     }
