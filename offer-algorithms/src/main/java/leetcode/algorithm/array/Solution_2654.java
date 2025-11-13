@@ -27,17 +27,13 @@ public class Solution_2654 {
         if (cnt > 0) return nums.length - cnt;
 
         // check subArray has 1 or not, use the minLen subArray as result.
-        int minLen = nums.length;
         int sc = Integer.MAX_VALUE ; //subarray count
         for (int i = 0; i < nums.length; i++) {
             int g = gcd(nums[i], 0);
-            int tmp = 0;
             for (int j = i + 1; j < nums.length; j++) {
-                tmp++;
                 g = gcd(nums[j], g);
                 if (g == 1) {
-                    sc = Math.min(sc, tmp);
-                    minLen = Math.min(minLen, j - i + 1);
+                    sc = Math.min(sc, j-i);
                     break;
                 }
             }
