@@ -1,5 +1,6 @@
 package leetcode.algorithm.dp;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -25,14 +26,54 @@ public class Solution_2435 {
     public int numberOfPaths(int[][] grid, int k) {
 
         int m = grid.length, n = grid[0].length;
-        // init
-        for (int i = 0; i < grid.length; i++) {
+
+//        return dp(grid, k);
+        f = new int[m][n][k];
+        for (int i = 0; i < f.length; i++) {
             for (int j = 0; j < n; j++) {
-                grid[i][j] = grid[i][j] % k;
+                Arrays.fill(f[i][j], -1);
             }
         }
-//        return dp(grid, k);
-        return dfs(grid, m - 1, n - 1, 0, k);
+        return dfsByf(grid, m - 1, n - 1, 0, k);
+//        return dfs(grid, m - 1, n - 1, 0, k);
+    }
+
+    int dfsByf(int[][] grid, int i, int j, int s, int k) {
+        if (i < 0 || j < 0)
+            return 0;
+        // check have ans or not
+        if (f[i][j][s] != -1)
+            return f[i][j][s];
+        if (i == 0 && j == 0) {
+            return f[i][j][s] = grid[i][j] % k == s ? 1 : 0;
+        }
+        // calculate presum
+        grid[i][j] %= k;
+        int presum = (s - grid[i][j] + k) % k;
+        int res = dfs(grid, i - 1, j, presum, k) + dfs(grid, i, j - 1, presum, k);
+        res = res % mod;
+        return f[i][j][s] = res;
+    }
+
+    private int dfs(int[][] grid, int i, int j, int s, int k) {
+        if (i < 0 || j < 0) return 0;
+        grid[i][j] %= k;
+        if (f[i][j][s] != -1) return f[i][j][s];
+
+        // check
+        if (i == 0 && j == 0) {
+            f[i][j][s] = grid[i][j] % k == s ? 1 : 0;
+            return f[i][j][s];
+        }
+
+        // calculate presum -> (presum + grid[i][j])%k  =s
+
+        int presum = (s - grid[i][j] + k) % k;
+        int res = 0;
+
+        res = (dfs(grid, i - 1, j, presum, k) + dfs(grid, i, j - 1, presum, k)) % mod;
+        f[i][j][s] = res;
+        return res;
     }
 
     int[][][] f;
@@ -56,6 +97,7 @@ public class Solution_2435 {
                 for (int v = 0; v < k; v++) {
                     if (f[i][j][v] == 0) continue; // not accessible.
                     // go right
+
                     if (i + 1 < m) {
                         int nv = (v + grid[i + 1][j]) % k;
                         f[i + 1][j][nv] = (f[i][j][v] + f[i + 1][j][nv]) % mod;
@@ -83,12 +125,12 @@ public class Solution_2435 {
     }
 
     // 到点(i,j) 和为sum, 且其sum%k == s 的情况下的数量.
-    private int dfs(int[][] grid, int i, int j, int s, int k) {
+    private int dfsByHashMap(int[][] grid, int i, int j, int s, int k) {
         if (i < 0 || j < 0) return 0;
         long key = genKey(i, j, s);
 
         if (i == 0 && j == 0) { // 初始节点.
-            int res = grid[0][0] == s? 1 : 0;
+            int res = grid[0][0] == s ? 1 : 0;
             map.put(key, res);
             return res;
         }
