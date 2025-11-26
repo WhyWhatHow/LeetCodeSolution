@@ -21,18 +21,6 @@ public class Solution_2435 {
 
     int mod = 1000_000_007;
 
-    // f(i,j,km) means 到(i, j)的路径和 mod k ==km 的路径数量.
-    /**
-     * int v = g[i][j]
-     * f(i,j,p) = f(i-1,j,(v+p)%k==p ) + f(i, j-1, (v+p)%k==p )
-     */
-    HashMap<Long, Integer> map = new HashMap<>();
-
-    long genKey(int i, int j, int k) {
-        long l = (long) (i << 30) | (long) (j << 7) | k;
-        return l;
-    }
-
 
     public int numberOfPaths(int[][] grid, int k) {
 
@@ -43,18 +31,18 @@ public class Solution_2435 {
                 grid[i][j] = grid[i][j] % k;
             }
         }
-        return dp(grid, k);
-//        return dfs(grid, m - 1, n - 1, 0, k);
+//        return dp(grid, k);
+        return dfs(grid, m - 1, n - 1, 0, k);
     }
 
     int[][][] f;
 
     /**
      * f(i,j,v) means (0,0)-> (i,j) sum%k == v 的路径数量.
-     *  nv = v+g[i+1][j]
-     *  f(i+1,j,nv)  = f(i,j,v) + f(i+1,j,nv) ;
-     *  nv = v+ g[i][j+1]
-     *  f(i,j+1,nv)  = f(i,j,v) + f(i,j+1,nv)
+     * nv = v+g[i+1][j]
+     * f(i+1,j,nv)  = f(i,j,v) + f(i+1,j,nv) ;
+     * nv = v+ g[i][j+1]
+     * f(i,j+1,nv)  = f(i,j,v) + f(i,j+1,nv)
      */
     int dp(int[][] grid, int k) {
         int m = grid.length, n = grid[0].length;
@@ -83,19 +71,38 @@ public class Solution_2435 {
         return f[m - 1][n - 1][0];
     }
 
-    // 到点(i,j) 和为sum, 且其sum%k == p 的情况下的数量.
-    private int dfs(int[][] grid, int i, int j, int p, int k) {
+
+    // f(i,j,v) means 到(i, j)的路径和 mod k ==v 的路径数量.
+    /**
+     * wa ,超时.
+     */
+    HashMap<Long, Integer> map = new HashMap<>();
+
+    private long genKey(int i, int j, int s) {
+        return ((long) i << 30) | ((long) j << 7) | s;
+    }
+
+    // 到点(i,j) 和为sum, 且其sum%k == s 的情况下的数量.
+    private int dfs(int[][] grid, int i, int j, int s, int k) {
         if (i < 0 || j < 0) return 0;
-//        if (i == 0 && j == 0) return p == 0 ? 1 : 0;
+        long key = genKey(i, j, s);
 
-        long key = genKey(i, j, p);
+        if (i == 0 && j == 0) { // 初始节点.
+            int res = grid[0][0] == s? 1 : 0;
+            map.put(key, res);
+            return res;
+        }
+
         if (map.containsKey(key)) return map.get(key);
-        long res = 0;
-        int v = grid[i][j] % k;
-        int tar = k - v;
 
-        res = dfs(grid, i - 1, j, (p + mod - v) % k, k) + dfs(grid, i, j - 1, (p + mod - v) % k, k);
-//        res = dfs(grid, i - 1, j, (v + p) % k, k) + dfs(grid, i, j - 1, (v + p) % k, k);
+        // 1. calculate preSum :  preSum + grid[i][j])%k == s ;
+        int preSum = (s - grid[i][j]) % k;
+        preSum = preSum < 0 ? preSum + k : preSum;
+
+        long res = 0;
+
+        res = dfs(grid, i - 1, j, preSum, k) + dfs(grid, i, j - 1, preSum, k);
+//        res = dfs(grid, i - 1, j, (v + s) % k, k) + dfs(grid, i, j - 1, (v + s) % k, k);
         res = res % mod;
         map.put(key, (int) res);
         return (int) res;
