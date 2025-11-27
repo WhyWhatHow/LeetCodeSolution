@@ -1,4 +1,4 @@
-package leetcode.algorithm.dp;
+package leetcode.algorithm.prefix;
 
 /**
  * @program: LeetCodeSolution
@@ -22,7 +22,7 @@ public class Solution_3381 {
     /**
      * 设pre[i] means [0,i) range preSum.
      * 当 k ==1,最大值, pre[j] - min(pre[i]) , i < j
-     * 当 k ==2, 对于 pre[j] - min(pre[i]) , i == j % k  && i < j
+     * 当 k ==2, 对于以j为下标结束的子数组的最大Sum:  pre[j] - min(pre[i]) , (i == j % k)  && i < j
      *
      * @param nums
      * @param k
