@@ -33,8 +33,65 @@ public class Solution_2872 {
         System.out.println("==================");
     }
 
-    // 统计入度,按照入度,从低到高进行排序.
+    /**
+     * 按照拓扑序思路,always 处理 叶子节点. 如果可以拆分,那就分,不可以就继续找父节点.
+     * @param n
+     * @param edges
+     * @param values
+     * @param k
+     * @return
+     */
     public int maxKDivisibleComponents(int n, int[][] edges, int[] values, int k) {
+        //  test case
+        if (edges.length == 0 || k == 1)
+            return n;
+        // init
+        long[] vs = new long[n];
+        for (int i = 0; i < n; i++) {
+            vs[i] = values[i];
+        }
+        int[] ds = new int[n];
+        ArrayList<Integer>[] g = new ArrayList[n];
+        Arrays.setAll(g, i -> new ArrayList<>());
+
+        // init graph and  in_degree of node
+        for (int[] e : edges) {
+            int u = e[0], v = e[1];
+            g[u].add(v);
+            g[v].add(u);
+            ds[u]++;
+            ds[v]++;
+        }
+
+        // add leave node to queue .
+        var q = new ArrayDeque<Integer>();
+        for (int i = 0; i < n; i++) {
+            if (ds[i] == 1)
+                q.add(i);
+        }
+
+        int res = 0;
+        // visit q, deal with leave node always
+        while (!q.isEmpty()) {
+            int i = q.poll();
+            ds[i]--;
+            if (vs[i] % k == 0) {
+                vs[i] = 0;
+                res++;
+            }
+            for (Integer v : g[i]) {
+                if (ds[v] == 0)
+                    continue; // already handled node
+                ds[v]--;
+                vs[v] += vs[i];
+                if (ds[v] == 1) // handle leave node.
+                    q.add(v);
+            }
+        }
+        return res;
+    }
+    // 统计入度,按照入度,从低到高进行排序.
+    public int maxKDivisibleComponentsUgly(int n, int[][] edges, int[] values, int k) {
         // count every node  in_degree
         int[] deg = new int[n];
         if (k == 1 || edges.length == 0) return n;
