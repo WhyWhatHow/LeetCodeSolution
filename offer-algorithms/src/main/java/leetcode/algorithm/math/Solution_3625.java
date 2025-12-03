@@ -44,7 +44,9 @@ public class Solution_3625 {
 
                 // calculate edge's k and b ==>  k= dy/dx and b
                 double k = dx != 0 ? 1.0d * dy / dx : Double.MAX_VALUE;
-                double b = dx == 0 ? x : 1.0d * y - k * x; // dx ==0 , 平行与y轴, 认为规定是 x.
+                double b = dx == 0 ? x : 1.0d * dx * y - dy * x;
+                // wa : 精度问题导致结果出现问题.
+//                double b = dx == 0 ? x : 1.0d * y - k * x; // dx ==0 , 平行与y轴, 认为规定是 x.
                 if (k == -0.0) k = 0.0;
                 if (b == -0.0) b = 0.0;
 
@@ -62,7 +64,7 @@ public class Solution_3625 {
 
         int cnt = 0;
         // 2. 计算所有的梯形数量, 包含平行四边形.
-        for (HashMap<Double, Integer> bm : kmap.values()) {
+        for (var  bm : kmap.values()) {
             int s = 0; // 之前的边的数量.
             for (Integer i : bm.values()) { //
                 cnt += s * i;
@@ -71,7 +73,7 @@ public class Solution_3625 {
         }
 
         // 3. 计算所有的平行四边形的数量.
-        for (HashMap<Double, Integer> km : map.values()) {
+        for (var km : map.values()) {
             int s = 0;
             for (Integer i : km.values()) {
                 cnt -= s * i;
