@@ -1,6 +1,7 @@
 package leetcode.algorithm.pq;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.PriorityQueue;
 
 /**
@@ -22,7 +23,7 @@ public class Solution_2042 {
 //                new int[][]{{1, 20}, {2, 10}, {3, 5}, {4, 9}, {6, 8}}
 
                 4,
-                new int[][]{{48,49},{22,30},{13,31},{31,46},{37,46},{32,36},{25,36},{49,50},{24,34},{6,41}}
+                new int[][]{{48, 49}, {22, 30}, {13, 31}, {31, 46}, {37, 46}, {32, 36}, {25, 36}, {49, 50}, {24, 34}, {6, 41}}
 
         ));
 //        System.out.println(sol.mostBooked(
@@ -33,13 +34,69 @@ public class Solution_2042 {
     }
 
     /**
+     * 构建两个队列:
+     * 1. 空闲房间队列
+     * 2. 占用开会队列.
+     */
+    public int mostBooked(int n, int[][] meetings) {
+        int[] cs = new int[n];
+        Arrays.sort(meetings, (a, b) -> a[0] - b[0]);
+
+        // 空闲房间队列
+        var pq = new PriorityQueue<Integer>();
+        for (int i = 0; i < n; i++) {
+            pq.add(i);
+        }
+        var busyPq = new PriorityQueue<int[]>((a, b) -> { // {endTime, room_id}
+            if (a[0] != b[0])
+                return a[0] - b[0];
+            else
+                return a[1] - b[1];
+        });
+
+        for (int[] m : meetings) {
+            int st = m[0], end = m[1];
+
+            // 将早于 startTime 的会议室置空
+            while (!busyPq.isEmpty() && busyPq.peek()[0] <= st) {
+                int[] polled = busyPq.poll();
+                pq.add(polled[1]);
+            }
+
+            // 用空闲会议室情况
+            if (!pq.isEmpty()) {
+                Integer i = pq.poll();
+                busyPq.add(new int[]{end, i});
+                cs[i]++;
+                continue;
+            }
+
+            // 无空闲会议
+            int[] polled = busyPq.poll();
+            int time = st >= polled[0] ? end : polled[0] + end - st;
+            cs[polled[1]]++;
+            busyPq.add(new int[]{time, polled[1]});
+        }
+
+        int max = -1, res = -1;
+        for (int i = 0; i < cs.length; i++) {
+            if (cs[i] > max) {
+                max = cs[i];
+                res = i;
+            }
+        }
+        return res;
+
+    }
+
+    /**
      * pq: 将会议按照开始时间排序.
      *
      * @param n
      * @param meetings
      * @return
      */
-    public int mostBooked(int n, int[][] meetings) {
+    public int mostBookedStupid(int n, int[][] meetings) {
         int[] cs = new int[n]; // 每一个meeting room 一共开始了多少个会议.
         int[] ends = new int[n]; // 每一个meeting room 的结束时间.
 
