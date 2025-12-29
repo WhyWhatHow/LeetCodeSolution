@@ -29,7 +29,7 @@ public class Solution_756 {
         var map = new HashMap<String, List<Character>>();
         for (String s : allowed) {
             String key = s.substring(0, 2);
-            List<Character> list = map.getOrDefault(key, new ArrayList<>());
+            var list = map.getOrDefault(key, new ArrayList<>());
             list.add(s.charAt(2));
             map.put(key, list);
         }
