@@ -9,6 +9,35 @@ package leetcode.algorithm;
 
 public class Solution_66 {
     public int[] plusOne(int[] digits) {
+        boolean yes = false;
+        int n = digits.length;
+        for (int i = digits.length - 1; i >= 0; i--) {
+            if (i == digits.length - 1) {
+                digits[i]++;
+                if (digits[i] == 10) {
+                    yes = true;
+                    digits[i] = 0;
+                }
+            } else if (yes) {
+                digits[i]++;
+                if (digits[i] == 10) digits[i] = 0;
+                else {
+                    yes = false;
+                    break;
+                }
+            } else break;
+        }
+
+        if (!yes) return digits;
+        int[] rs = new int[n + 1];
+        rs[0] = 1;
+        for (int i = 1; i < rs.length; i++) {
+            rs[i] = digits[i - 1];
+        }
+        return rs;
+    }
+
+    public int[] plusOneOld(int[] digits) {
         // 标记进位
         boolean check[] = new boolean[digits.length + 1];
         // 加一
