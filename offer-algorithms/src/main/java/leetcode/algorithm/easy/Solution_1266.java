@@ -23,11 +23,12 @@ public class Solution_1266 {
             int x = points[i - 1][0], y = points[i - 1][1];
             int dx = Math.abs(x - tox);
             int dy = Math.abs(y - toy);
-            int min = Math.min(dx, dy);
-            int tmp = dx + dy;
-            //
-            int tt = Math.abs(dx - min) + min + Math.abs(dy - min);
-            res += Math.min(tt,tmp);
+            res += Math.max(dx, dy);
+//            int min = Math.min(dx, dy);
+//            int tmp = dx + dy;
+//            //
+//            int tt = Math.abs(dx - min) + min + Math.abs(dy - min);
+//            res += Math.min(tt,tmp);
         }
         return res;
     }
