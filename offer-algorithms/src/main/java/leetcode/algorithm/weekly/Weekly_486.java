@@ -46,6 +46,7 @@ public class Weekly_486 {
 //        int
         for (int bit = 50; bit >= 0; bit--) {
             if (k == 0) break;
+            //当前位置设置成0,还有bit长度的位置可以设置数据, 所以是C(bit,k) .
             long count = combination(bit, k);
             if (count < n) { //
                 res |= (1l << bit);
