@@ -123,4 +123,19 @@ public class MyMath {
         int g = gcd(x, y);
         return x / g * y;
     }
+
+    /**
+     * C(n,k) n个元素中选择k个元素的方案数.
+     * C(n,k) == C(n,n-k) = n *(n-1)*...*(n-k+1) / (1*2*3*...*k)
+     */
+    public static long combination(int n, int k) {
+        if (k == 0 || n == k) return 1;
+        if (k < 0 || k > n) return 0;
+        long res = 1;
+        for (int i = 0; i < k; i++) {
+            res *= (n - i);
+            res /= (i + 1);
+        }
+        return res;
+    }
 }
