@@ -3,7 +3,6 @@ package leetcode.algorithm.dp;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @program: LeetCodeSolution
@@ -42,16 +41,14 @@ public class Solution_2977 {
 
         var imap = new HashMap<String, Integer>(); // key : str , val: idx. val from zero.
         // dist ==null 的情况传参数进去会有npe问题.
-        dist = init(dist, imap, original, changed, cost);
+        dist = init( imap, original, changed, cost);
 
         //  对于len(s) 同一长度的graph.
-        var map = new HashMap<Integer, Set<Integer>>();
+        var set = new HashSet<Integer>();
+//        var map = new HashMap<Integer, Set<Integer>>();
         for (int i = 0; i < original.length; i++) {
             int len = original[i].length();
-            var set = map.getOrDefault(len, new HashSet<>());
-            set.add(imap.get(original[i]));
-            set.add(imap.get(changed[i]));
-            map.put(len, set);
+            set.add(len);
         }
 
         floyd(dist);
@@ -61,12 +58,12 @@ public class Solution_2977 {
 
 //        return dfs(f.length - 1, f, cs, ts, dist, imap, map);
 
-        dfs(f.length - 1, f, cs, ts, dist, imap, map);
+        dfs(f.length - 1, f, cs, ts, dist, imap, set);
         return f[cs.length - 1] == MAX ? -1 : f[cs.length - 1];
     }
 
     long dfs(int i, long[] f, char[] cs, char[] ts, int[][] dist,
-             HashMap<String, Integer> imap, HashMap<Integer, Set<Integer>> map) {
+             HashMap<String, Integer> imap, HashSet<Integer> set) {
         if (i < 0) return 0; // test
         if (f[i] != MAX) return f[i];
 
@@ -74,10 +71,10 @@ public class Solution_2977 {
         long res = MAX;
 
         // 跳过当前元素
-        if (cs[i] == ts[i]) res = Math.min(res, dfs(i - 1, f, cs, ts, dist, imap, map));
+        if (cs[i] == ts[i]) res = Math.min(res, dfs(i - 1, f, cs, ts, dist, imap,set ));
 
         // 不条当前元素.
-        for (Integer len : map.keySet()) {
+        for (Integer len : set) {
             if (i + 1 < len) continue;
             var from = String.valueOf(cs, i - len + 1, len);
             var to = String.valueOf(ts, i - len + 1, len);
@@ -85,7 +82,7 @@ public class Solution_2977 {
             Integer y = imap.getOrDefault(to, -1);
             if (x < 0 || y < 0) continue;
             if (dist[x][y] != inf)
-                res = Math.min(res, dist[x][y] + dfs(i - len, f, cs, ts, dist, imap, map));
+                res = Math.min(res, dist[x][y] + dfs(i - len, f, cs, ts, dist, imap, set));
         }
         return f[i] = res;
     }
@@ -102,7 +99,7 @@ public class Solution_2977 {
         }
     }
 
-    private int[][] init(int[][] dist, HashMap<String, Integer> map, String[] original, String[] changed, int[] cost) {
+    private int[][] init( HashMap<String, Integer> map, String[] original, String[] changed, int[] cost) {
 
         for (int i = 0; i < original.length; i++) {
             int x = genIdx(map, original[i]);
