@@ -57,11 +57,13 @@ public class Solution_3640 {
             long sum = a[2];
             long lsum = nums[l];
             int lend = l;
+
             // go left
             while (l > 0 && (nums[l] > nums[l - 1] && nums[l - 1] > 0)) {
-                lsum += nums[--l];
+                lsum += nums[--l]; // nums[l-1]
             }
             lsum = Math.max(lsum, nums[lend]);
+
             // go right
             long rsum = nums[r];
             int rst = r;
