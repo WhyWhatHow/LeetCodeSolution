@@ -1,4 +1,4 @@
-package leetcode.algorithm.medium;
+package leetcode.algorithm.prefix;
 
 import java.util.HashMap;
 import java.util.HashSet;
