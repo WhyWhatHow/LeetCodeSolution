@@ -1,4 +1,4 @@
-package leetcode.algorithm;
+package leetcode.algorithm.binarysearch;
 
 /**
  * @program: LeetCodeSolution
