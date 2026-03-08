@@ -21,6 +21,7 @@ public class Solution_1980 {
         for (int i = 0; i < nums.length; i++) {
             cs[i] = nums[i].charAt(i) == '0' ? '1' : '0';
         }
+        return String.valueOf(cs);
     }
 
     public String findDifferentBinaryStringStupid(String[] nums) {
