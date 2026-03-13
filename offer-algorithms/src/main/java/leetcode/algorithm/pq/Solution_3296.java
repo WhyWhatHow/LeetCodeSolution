@@ -30,9 +30,11 @@ public class Solution_3296 {
 //    工人 2 将高度降低 3，花费 workerTimes[2] + workerTimes[2] * 2 + workerTimes[2] * 3 = 12 秒。
 //    工人 3 将高度降低 2，花费 workerTimes[3] + workerTimes[3] * 2 = 12 秒。
 //    所需的最少时间为 max(9, 12, 12, 12) = 12 秒。
-    // 用pq 维护每个工人 当前高度下所需要耗费的时间. 用minpq 解决问题.
+    // 每一次高度降低,选择耗时最少的工人去做, 同时,需要同步更新工人下一次可以使用的最短时间.
+
     public long minNumberOfSeconds(int mountainHeight, int[] workerTimes) {
         long[] cs = new long[workerTimes.length];
+        // idx 下标, nextTime 表示下一高度处理需要的耗费时间, cnt: 表示处理的高度. .
         var pq = new PriorityQueue<long[]>((a, b) -> { // long[] ==> {idx, nextTime,cnt}
             return Long.compare(a[1], b[1]);
         }); // idx , workTime , cnt
