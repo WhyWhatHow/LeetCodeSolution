@@ -8,6 +8,27 @@ package leetcode.algorithm.array;
  **/
 
 public class Solution_189 {
+
+    public void rotate20260317(int[] nums, int k) {
+        int n = nums.length;
+        k = k % n;
+        int start = 0;
+        int cnt = 0;
+        while (cnt < n) {
+            int i = start; // 表示从0开始的迭代元素, 避免重复, 所以需要start++ ;
+            int prev = nums[i];
+            do {
+                int nxt = (i + k) % n;
+                int t = nums[nxt];
+                nums[nxt] = prev;
+                prev = t;
+                i = nxt;
+                cnt++;
+            } while (start != i);
+            start++;
+        }
+    }
+
     // o(1)space
     public void rotate(int[] nums, int k) {
         if (nums.length == 1) return;
