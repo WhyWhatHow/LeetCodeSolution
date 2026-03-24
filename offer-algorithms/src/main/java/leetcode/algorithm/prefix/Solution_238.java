@@ -1,4 +1,4 @@
-package leetcode.algorithm;
+package leetcode.algorithm.prefix;
 
 /**
  * @program: LeetCodeSolution
@@ -8,7 +8,9 @@ package leetcode.algorithm;
  **/
 
 public class Solution_238 {
-    public int[] productExceptSelf(int[] nums) {
+
+    ///  not qualified
+    public int[] productExceptSelfByDIv(int[] nums) {
         int ans[] = new int[nums.length];
         int all = 1;
         boolean checkZero = false; // 判断是否有0元素
@@ -22,7 +24,7 @@ public class Solution_238 {
             }
         }
         // 排除 {0,0} 集合
-        if (2<=cnt)
+        if (2 <= cnt)
             return ans;
         for (int i = 0; i < ans.length; i++) {
             if (checkZero) {
@@ -40,19 +42,42 @@ public class Solution_238 {
     public static void main(String[] args) {
         Solution_238 sol = new Solution_238();
         int[] ints = sol.productExceptSelf(new int[]
-                {
+                        {
 //                2,3,0,0
 //                        1,0
 //                    0,0
 //                -1,1,0,-3,3
 //                        0, 4, 0
-                }
+                                1, 2, 3, 4
+                        }
 
         );
         for (int anInt : ints) {
-            System.out.print(anInt+",");
+            System.out.print(anInt + ",");
         }
         System.out.println("==================");
+    }
+
+    public int[] productExceptSelf(int[] nums) {
+        int n = nums.length;
+        int[] ps = new int[n + 1]; //ps[i] means [0,i) range multiply val
+        // ps[i+1] = ps[i]*nums[i];
+        ps[0] = 1;
+        for (int i = 0; i < n; i++) {
+            ps[i + 1] = ps[i] * nums[i];
+        }
+
+        int[] ss = new int[n + 1]; //
+        ss[n] = 1;
+        for (int i = n - 1; i >= 0; i--) {
+            ss[i] = ss[i + 1] * nums[i];
+        }
+
+        int[] f = new int[n];
+        for (int i = 0; i < n; i++) {
+            f[i] = ps[i] * ss[i + 1];
+        }
+        return f;
     }
 }
 
