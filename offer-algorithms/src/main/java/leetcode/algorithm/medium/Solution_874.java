@@ -29,12 +29,8 @@ public class Solution_874 {
         var oby = new HashMap<Integer, TreeSet<Integer>>();
         for (int[] a : obstacles) {
             int cx = a[0], cy = a[1];
-            var xs = obx.getOrDefault(cx, new TreeSet<>());
-            xs.add(cy);
-            var ys = oby.getOrDefault(cy, new TreeSet<>());
-            ys.add(cx);
-            obx.put(cx, xs);
-            oby.put(cy, ys);
+            obx.computeIfAbsent(cx, k -> new TreeSet<>()).add(cy);
+            oby.computeIfAbsent(cy, k -> new TreeSet<>()).add(cx);
         }
 
         int x = 0, y = 0; // 当前坐标
