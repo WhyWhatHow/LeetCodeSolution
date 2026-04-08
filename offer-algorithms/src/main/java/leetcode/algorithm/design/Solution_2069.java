@@ -57,15 +57,17 @@ class Robot {
 
     private Object[] getState() {
         int t = cur % all;
-        if (t > 0 && t <= w - 1) {
+        if (t == 0) {
+            var s = first ? "East" : "South";
+            return new Object[]{0, 0, s};
+        } else if (t <= w - 1) {
             return new Object[]{t, 0, "East"};
-        } else if (t > 0 && t <= w + h - 2) {
+        } else if (t <= w + h - 2) {
             return new Object[]{w - 1, t - w + 1, "North"};
-        } else if (t > 0 && t <= w + w + h - 3) {
+        } else if (t <= w + w + h - 3) {
             return new Object[]{w - 1 - (t - w - h + 2), h - 1, "West"};
         } else {
-            if(first)return new Object[]{0,0,"East"}; // 第一次没有动
-            else  return new Object[]{0, t==0?0:all-t, "South"};
+            return new Object[]{0, all - t, "South"};
         }
     }
 
