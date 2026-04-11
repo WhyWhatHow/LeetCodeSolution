@@ -1,4 +1,4 @@
-package leetcode.algorithm.easy;
+package leetcode.algorithm.medium;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,10 +8,9 @@ import java.util.HashMap;
  * @description: #
  * @author: WhyWhatHow
  **/
-public class Solution_3740 {
+public class Solution_3741 {
 
     public static void main(String[] args) {
-        Solution_3740 sol = new Solution_3740();//
 
         System.out.println("==================");
     }
