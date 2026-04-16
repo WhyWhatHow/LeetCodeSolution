@@ -1,4 +1,4 @@
-package leetcode.algorithm.medium;
+package leetcode.algorithm.binarysearch;
 
 import java.util.*;
 
