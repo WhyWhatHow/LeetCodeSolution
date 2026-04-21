@@ -1,4 +1,4 @@
-package leetcode.algorithm.medium;
+package leetcode.algorithm.unionfind;
 
 import java.util.HashMap;
 
