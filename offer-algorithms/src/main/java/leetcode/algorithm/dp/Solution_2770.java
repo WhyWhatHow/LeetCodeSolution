@@ -24,10 +24,12 @@ public class Solution_2770 {
     }
 
     //set f(i) means [0,i) as maxJumps.
+    int MIN = Integer.MIN_VALUE;
+
     public int maximumJumps(int[] nums, int target) {
         int n = nums.length;
         int[] f = new int[n];
-        Arrays.fill(f, -1);
+        Arrays.fill(f, MIN);
         dfs(f, target, nums, n - 1);
         return f[n - 1];
     }
@@ -37,7 +39,7 @@ public class Solution_2770 {
     private int dfs(int[] f, int target, int[] nums,
                     int i) {
         if (i == 0) return f[i] = 0;
-        if (f[i] != -1) return f[i];
+        if (f[i] != MIN) return f[i];
 
         long down = 0l + nums[i] - target;
         long up = 0l + nums[i] + target;
