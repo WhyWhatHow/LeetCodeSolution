@@ -7,6 +7,32 @@ package leetcode.algorithm.binarysearch;
  **/
 
 public class Solution_154 {
+    public static void main(String[] args) {
+        Solution_154 sol = new Solution_154();
+        System.out.println(sol.findMin20260516(
+                new int[]{1, 3, 3}
+
+        ));
+    }
+
+    public int findMin20260516(int[] nums) {
+        int n = nums.length;
+        int l = 0, r = n - 1;
+        while (l <= r) {
+
+            int mid = l + (r - l) / 2;
+            if (nums[mid] < nums[r]) { //[mid+1, r] range no minVal ==> [l,mid]
+                r = mid;
+            } else if (nums[mid] > nums[r]) { // [l,mid] no minVal
+                l = mid+1;
+            }else { // nums[mid] ==nums[r] ==> [l,r] ->[l,r-1] remove nums[r].
+                r--;
+            }
+//            if (nums[l] >= nums[r])
+        }
+        return nums[l];
+    }
+
 
     public int findMin(int[] nums) {
         int n = nums.length;
