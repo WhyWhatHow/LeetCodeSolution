@@ -1,8 +1,6 @@
 package leetcode.algorithm.bfs;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * @program: LeetCodeSolution
@@ -15,12 +13,62 @@ public class Solution_1345 {
     public static void main(String[] args) {
         Solution_1345 sol = new Solution_1345();
 //        HashMap<Integer, Integer> map = new HashMap<>();
+//
 //        map.put(1, 1);
 //        map.put(1, 2);
 //        System.out.println(map.get(1));
-        System.out.println(sol.minJumps(new int[]{7,7,2,1,7,7,7,3,4,1}));
+        System.out.println(sol.minJumps20260518(
+//                new int[]{7,7,2,1,7,7,7,3,4,1}
+//                new int[]{100,-23,-23,404,100,23,23,23,3,404}
+                new int[]{}
+        ));
         System.out.println("==================");
     }
+
+    // use bfs
+    public int minJumps20260518(int[] arr) {
+        int n = arr.length;
+
+
+        // use map to store the elements have same val.
+        var map = new HashMap<Integer, Set<Integer>>(); // key : arr[i], val : list.of(i)
+        for (int i = 0; i < n; i++) {
+            var set = map.getOrDefault(arr[i], new TreeSet<Integer>());
+            set.add(i);
+            map.put(arr[i], set);
+
+        }
+
+        var q = new ArrayDeque<int[]>(); // i , cnt
+        q.add(new int[]{0, 0});
+        boolean[] v = new boolean[n];
+        v[0] = true;
+        while (!q.isEmpty()) {
+            var a = q.poll();
+            int cnt = a[1], i = a[0];
+            var set = map.getOrDefault(arr[i], new TreeSet<>());
+            if (i == n - 1)
+                return cnt;
+            for (var j : set) {
+                if (!v[j]) {
+                    q.add(new int[]{j, cnt + 1});
+                    v[j] = true;
+                }
+            }
+            if (i + 1 < n && !v[i + 1]) {
+                q.add(new int[]{i + 1, cnt + 1});
+                v[i + 1] = true;
+            }
+            if (i - 1 >= 0 && !v[i - 1]) {
+                q.add(new int[]{i - 1, cnt + 1});
+                v[i - 1] = true;
+            }
+            map.remove(arr[i]);
+        }
+        return -1;
+
+    }
+
 
     /**
      * bfs: 将 idx-1, idx+1, arr[i]==a[j] && i!=j  入队
@@ -48,7 +96,8 @@ public class Solution_1345 {
             int step = poll[1];
             // check
             if (idx == arr.length - 1) {
-               res= step;break;
+                res = step;
+                break;
             }
             // add in queue
             if (idx + 1 < arr.length && !vis[idx + 1]) {
