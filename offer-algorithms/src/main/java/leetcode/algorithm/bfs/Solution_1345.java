@@ -29,14 +29,11 @@ public class Solution_1345 {
     public int minJumps20260518(int[] arr) {
         int n = arr.length;
 
-
         // use map to store the elements have same val.
         var map = new HashMap<Integer, Set<Integer>>(); // key : arr[i], val : list.of(i)
         for (int i = 0; i < n; i++) {
-            var set = map.getOrDefault(arr[i], new TreeSet<Integer>());
-            set.add(i);
-            map.put(arr[i], set);
-
+            // opt
+            map.computeIfAbsent(arr[i], k -> new TreeSet<>()).add(i);
         }
 
         var q = new ArrayDeque<int[]>(); // i , cnt
@@ -46,23 +43,26 @@ public class Solution_1345 {
         while (!q.isEmpty()) {
             var a = q.poll();
             int cnt = a[1], i = a[0];
-            var set = map.getOrDefault(arr[i], new TreeSet<>());
             if (i == n - 1)
                 return cnt;
+
+            // handle i+1, i-1 #opt
+            for (var j : new int[]{i - 1, i + 1}) {
+                if (j >= 0 && j < n && !v[j]) {
+                    q.add(new int[]{j, cnt + 1});
+                    v[j] = true;
+                }
+            }
+
+            // handle set have same val
+            var set = map.getOrDefault(arr[i], new TreeSet<>());
             for (var j : set) {
                 if (!v[j]) {
                     q.add(new int[]{j, cnt + 1});
                     v[j] = true;
                 }
             }
-            if (i + 1 < n && !v[i + 1]) {
-                q.add(new int[]{i + 1, cnt + 1});
-                v[i + 1] = true;
-            }
-            if (i - 1 >= 0 && !v[i - 1]) {
-                q.add(new int[]{i - 1, cnt + 1});
-                v[i - 1] = true;
-            }
+
             map.remove(arr[i]);
         }
         return -1;
