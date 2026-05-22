@@ -23,30 +23,32 @@ public class Solution_33 {
     // 两次二分, 第一次找最小值 位置 i [0,i-1] [i,n-1] binary search 查找值如果存在.
     public int search(int[] nums, int target) {
         int n = nums.length;
-        int l = 0, r = n - 1;
 
-        if (n == 1) return nums[0] == target ? 0 : -1;
-        // find min Index -> i
-        int i = -1;
-        while (l <= r) {
-            int mid = l + (r - l) / 2;
-            if ((mid + 1 < n && nums[mid] < nums[mid + 1])
-                    && (mid - 1 >= 0 && nums[mid] < nums[mid - 1])) {
-                i = mid;
-                break;
-            }
-            // [l,mid] , [mid+1, r]
-            if (nums[mid] <= nums[r]) {  // min -> [l,mid]
-                r = mid - 1;
-            } else {
-                l = mid + 1;
-            }
-        }
-
+        int l = getMin(nums, 0, n - 1);
+        int i = l;
         // [0,l-1] , [l,n-1]
         int res = binarysearch(nums, 0, i - 1, target);
         if (res == -1) res = binarysearch(nums, i, n - 1, target);
         return res;
+    }
+
+    // 返回 nums[] 中 最小值的下标.做左侧的那一个.
+    // 具体的判断思路, nums[mid] 与nums[r] 做比较, 判断 最小值在哪一个区间.
+    // nums[mid] > nums[r]  min -> [mid+1, r]
+    // nums[mid] <=nums[r]  min -> [l, mid] , 不能说明 nums[mid] 会有最小值.
+    private int getMin(int[] nums, int l, int r) {
+
+        while (l < r) { // why ? l<r not l<=r ?
+            int mid = l + (r - l) / 2;
+
+            // [l,mid] , [mid+1, r]
+            if (nums[mid] > nums[r]) {  // min -> [mid+1,r]
+                l = mid + 1;
+            } else {
+                r = mid;
+            }
+        }
+        return l;
     }
 
     private int binarysearch(int[] nums, int l, int r, int target) {
