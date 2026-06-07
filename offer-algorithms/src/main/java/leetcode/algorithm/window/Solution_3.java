@@ -1,9 +1,39 @@
 package leetcode.algorithm.window;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
 public class Solution_3 {
+    public int lengthOfLongestSubstring20260607(String s) {
+        char[] cs = s.toCharArray();
+        var map = new HashMap<Character, Integer>(); // key: char, val: lastIdx.
+        var q = new ArrayList<Character>();
+        int l = 0, r = 0;
+        int n = cs.length;
+        int res = 0;
+        // "abcabcbb"
+        if (n == 1)
+            return 1;
+        while (r < n) {
+            while (r < n && !map.containsKey(cs[r])) {
+                map.put(cs[r], r);
+                r++;
+            }
+            res = Math.max(res, r - l);
+            if (r == n)
+                break;
+//            IO.println(l + "," + r + ":" + res);
+            int ll = map.get(cs[r]);
+            while (l <= ll) {
+                map.remove(cs[l]);
+                l++;
+            }
+            map.put(cs[r], r);
+            r++;
+        }
+        return res;
+    }
 
     /***
      * 求最大无重复字串长度, 求子串:subString(s,e);
