@@ -1,9 +1,10 @@
-package leetcode.algorithm;
+package leetcode.algorithm.window;
 
 import java.util.HashMap;
 
 
 public class Solution_3 {
+
     /***
      * 求最大无重复字串长度, 求子串:subString(s,e);
      * start  = end  =0 ;
